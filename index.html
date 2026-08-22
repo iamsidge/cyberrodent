@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#040d0a">
 <meta name="color-scheme" content="dark">
 
-<!-- ── Open Graph (Facebook, LinkedIn, Discord, Slack, Bluesky) ── -->
+<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mousemechanic.co.uk/">
 <meta property="og:site_name" content="CyberRodent Repair Co.">
@@ -22,1124 +22,1562 @@
 <meta property="og:image:alt" content="CyberRodent Repair Co. — dark terminal-style banner with a neon-green neural-core diagram and workshop statistics.">
 <meta property="og:locale" content="en_GB">
 
-<!-- ── Twitter / X ── -->
+<!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CyberRodent Repair Co. — Cybernetic Rodent Repair Specialist">
 <meta name="twitter:description" content="Run a diagnostic on your malfunctioning cyberhamster. Interactive fault scanner, anatomy schematic, live repair tracker and an AI workshop assistant called REX-7.">
 <meta name="twitter:image" content="https://mousemechanic.co.uk/og-image.png">
 <meta name="twitter:image:alt" content="CyberRodent Repair Co. — dark terminal-style banner with a neon-green neural-core diagram and workshop statistics.">
 
-<!-- ── Icons ── -->
+<!-- Icons -->
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="icon" href="/icon-512.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="/icon-180.png">
 <link rel="manifest" href="/site.webmanifest">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --neon-green: #00ff88;
-    --neon-cyan: #00e5ff;
-    --neon-pink: #ff006e;
-    --dark-bg: #040d0a;
-    --panel-bg: rgba(0, 255, 136, 0.04);
-    --panel-border: rgba(0, 255, 136, 0.2);
-    --text-dim: #5a8a72;
-    --text-body: #a8d4bc;
-    --glow-green: 0 0 20px rgba(0, 255, 136, 0.5);
-    --glow-cyan: 0 0 20px rgba(0, 229, 255, 0.5);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--dark-bg);
-    color: var(--text-body);
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-    cursor: crosshair;
-  }
-
-  /* ── Circuit Background ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ── Scanline overlay ── */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.08) 2px,
-      rgba(0,0,0,0.08) 4px
-    );
-    pointer-events: none;
-    z-index: 999;
-    animation: scanlines 8s linear infinite;
-  }
-
-  @keyframes scanlines {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 100px; }
-  }
-
-  /* ── Nav ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 3rem;
-    background: rgba(4, 13, 10, 0.9);
-    border-bottom: 1px solid var(--panel-border);
-    backdrop-filter: blur(10px);
-  }
-
-  .nav-logo {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--neon-green);
-    letter-spacing: 3px;
-    text-shadow: var(--glow-green);
-  }
-
-  .nav-logo span { color: var(--neon-pink); }
-
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-dim);
-    text-decoration: none;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    transition: color 0.2s, text-shadow 0.2s;
-  }
-
-  .nav-links a:hover {
-    color: var(--neon-cyan);
-    text-shadow: var(--glow-cyan);
-  }
-
-  .nav-status {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--neon-green);
-    letter-spacing: 1px;
-  }
-
-  .status-dot {
-    width: 8px; height: 8px;
-    background: var(--neon-green);
-    border-radius: 50%;
-    box-shadow: var(--glow-green);
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
-  }
-
-  /* ── Hero ── */
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 8rem 3rem 4rem;
-    overflow: hidden;
-    z-index: 1;
-  }
-
-  .hero-eyebrow {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--neon-pink);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0;
-    animation-delay: 0.2s;
-  }
-
-  .hero-title {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(2.5rem, 6vw, 6rem);
-    font-weight: 900;
-    line-height: 1;
-    color: #fff;
-    margin-bottom: 0.5rem;
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0;
-    animation-delay: 0.4s;
-  }
-
-  .hero-title .highlight {
-    color: var(--neon-green);
-    text-shadow: var(--glow-green), 0 0 60px rgba(0,255,136,0.3);
-    display: block;
-  }
-
-  .hero-title .highlight2 {
-    color: var(--neon-cyan);
-    text-shadow: var(--glow-cyan), 0 0 60px rgba(0,229,255,0.3);
-  }
-
-  .hero-sub {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.8rem, 1.5vw, 1rem);
-    color: var(--text-dim);
-    margin-top: 2rem;
-    max-width: 550px;
-    line-height: 1.8;
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0;
-    animation-delay: 0.6s;
-  }
-
-  .hero-cta {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 3rem;
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0;
-    animation-delay: 0.8s;
-  }
-
-  .btn-primary {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 1rem 2.5rem;
-    background: var(--neon-green);
-    color: var(--dark-bg);
-    border: none;
-    cursor: pointer;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    transition: box-shadow 0.2s, transform 0.1s;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .btn-primary:hover {
-    box-shadow: var(--glow-green), 0 0 40px rgba(0,255,136,0.4);
-    transform: translateY(-2px);
-  }
-
-  .btn-secondary {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 1rem 2.5rem;
-    background: transparent;
-    color: var(--neon-cyan);
-    border: 1px solid var(--neon-cyan);
-    cursor: pointer;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    transition: background 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .btn-secondary:hover {
-    background: rgba(0,229,255,0.1);
-    box-shadow: var(--glow-cyan);
-  }
-
-  /* Floating rodent graphic */
-  .hero-graphic {
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18rem;
-    opacity: 0.06;
-    filter: blur(1px);
-    animation: float 6s ease-in-out infinite;
-    user-select: none;
-    pointer-events: none;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(-50%) rotate(-5deg); }
-    50% { transform: translateY(calc(-50% - 20px)) rotate(5deg); }
-  }
-
-  /* ── Stats bar ── */
-  .stats-bar {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    border-top: 1px solid var(--panel-border);
-    border-bottom: 1px solid var(--panel-border);
-    background: var(--panel-bg);
-  }
-
-  .stat-item {
-    flex: 1;
-    padding: 2rem;
-    text-align: center;
-    border-right: 1px solid var(--panel-border);
-    transition: background 0.3s;
-  }
-
-  .stat-item:last-child { border-right: none; }
-  .stat-item:hover { background: rgba(0,255,136,0.06); }
-
-  .stat-num {
-    font-family: 'Orbitron', monospace;
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: var(--neon-green);
-    text-shadow: var(--glow-green);
-    display: block;
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-top: 0.5rem;
-    display: block;
-  }
-
-  /* ── Section base ── */
-  section {
-    position: relative;
-    z-index: 1;
-    padding: 6rem 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--neon-pink);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-  }
-
-  .section-title {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.5rem, 3vw, 2.8rem);
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 3rem;
-    line-height: 1.2;
-  }
-
-  .section-title .accent { color: var(--neon-green); }
-
-  /* ── Services ── */
-  #services { max-width: 100%; padding: 6rem 3rem; }
-  #services > * { max-width: 1200px; margin-left: auto; margin-right: auto; }
-  #services .section-title, #services .section-tag { max-width: 1200px; margin-left: auto; margin-right: auto; display: block; }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5px;
-    background: var(--panel-border);
-    border: 1.5px solid var(--panel-border);
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .service-card {
-    background: var(--dark-bg);
-    padding: 2.5rem;
-    transition: background 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .service-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--neon-green);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-
-  .service-card:hover { background: rgba(0, 255, 136, 0.03); }
-  .service-card:hover::before { transform: scaleX(1); }
-
-  .service-icon {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 1.5rem;
-    filter: grayscale(0.3);
-  }
-
-  .service-name {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--neon-cyan);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-
-  .service-desc {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.95rem;
-    color: var(--text-body);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-
-  .service-price {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--neon-green);
-    letter-spacing: 1px;
-  }
-
-  /* ── About ── */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: center;
-  }
-
-  .about-terminal {
-    background: rgba(0, 255, 136, 0.03);
-    border: 1px solid var(--panel-border);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    padding: 2rem;
-    position: relative;
-  }
-
-  .terminal-header {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--panel-border);
-  }
-
-  .t-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-  }
-
-  .t-dot.red { background: #ff5f57; }
-  .t-dot.yellow { background: #febc2e; }
-  .t-dot.green { background: #28c840; }
-
-  .terminal-line {
-    color: var(--text-dim);
-    line-height: 2;
-  }
-
-  .terminal-line .cmd { color: var(--neon-green); }
-  .terminal-line .val { color: var(--neon-cyan); }
-  .terminal-line .ok { color: #00ff88; }
-
-  .cursor-blink {
-    display: inline-block;
-    width: 8px; height: 14px;
-    background: var(--neon-green);
-    vertical-align: middle;
-    animation: blink 1.2s step-end infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
-  .about-text p {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-    color: var(--text-body);
-  }
-
-  .about-text .highlight-text {
-    color: var(--neon-green);
-    font-weight: 600;
-  }
-
-  .certifications {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 2rem;
-  }
-
-  .cert-badge {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--neon-pink);
-    border: 1px solid rgba(255, 0, 110, 0.4);
-    padding: 0.35rem 0.75rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: background 0.2s;
-  }
-
-  .cert-badge:hover { background: rgba(255, 0, 110, 0.1); }
-
-  /* ── Testimonials ── */
-  #testimonials { background: rgba(0, 229, 255, 0.02); border-top: 1px solid var(--panel-border); border-bottom: 1px solid var(--panel-border); max-width: 100%; }
-  #testimonials > * { max-width: 1200px; margin-left: auto; margin-right: auto; }
-  #testimonials .section-title, #testimonials .section-tag { display: block; }
-
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-
-  .testimonial-card {
-    border: 1px solid var(--panel-border);
-    padding: 2rem;
-    background: var(--dark-bg);
-    position: relative;
-    transition: border-color 0.3s;
-  }
-
-  .testimonial-card:hover { border-color: rgba(0, 229, 255, 0.4); }
-
-  .quote-mark {
-    font-family: 'Orbitron', monospace;
-    font-size: 4rem;
-    color: var(--neon-cyan);
-    opacity: 0.15;
-    line-height: 1;
-    margin-bottom: -1rem;
-  }
-
-  .testimonial-text {
-    font-size: 0.9rem;
-    line-height: 1.8;
-    color: var(--text-body);
-    margin-bottom: 1.5rem;
-    font-style: italic;
-  }
-
-  .testimonial-author {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--neon-cyan);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .testimonial-role {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    margin-top: 0.25rem;
-  }
-
-  /* ── Process ── */
-  .process-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    position: relative;
-  }
-
-  .process-steps::before {
-    content: '';
-    position: absolute;
-    top: 40px;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-cyan), transparent);
-    z-index: 0;
-  }
-
-  .process-step {
-    text-align: center;
-    padding: 0 1.5rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  .step-num {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.7rem;
-    font-weight: 900;
-    width: 80px; height: 80px;
-    border-radius: 50%;
-    background: var(--dark-bg);
-    border: 2px solid var(--neon-green);
-    color: var(--neon-green);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    box-shadow: var(--glow-green);
-    letter-spacing: 1px;
-  }
-
-  .step-title {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-  }
-
-  .step-desc {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text-dim);
-    line-height: 1.8;
-  }
-
-  /* ── Contact ── */
-  #contact { max-width: 100%; padding: 6rem 3rem; background: linear-gradient(0deg, rgba(0,255,136,0.04) 0%, transparent 100%); border-top: 1px solid var(--panel-border); }
-
-  .contact-inner {
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin-top: 3rem;
-  }
-
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    text-align: left;
-  }
-
-  .form-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--neon-green);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .form-input, .form-select, .form-textarea {
-    background: rgba(0, 255, 136, 0.03);
-    border: 1px solid var(--panel-border);
-    color: var(--text-body);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    padding: 0.85rem 1rem;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    width: 100%;
-    -webkit-appearance: none;
-  }
-
-  .form-input:focus, .form-select:focus, .form-textarea:focus {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
-  }
-
-  .form-textarea { min-height: 120px; resize: vertical; }
-
-  .form-select option { background: #040d0a; }
-
-  .form-submit {
-    margin-top: 1rem;
-    align-self: stretch;
-  }
-
-  /* ── Footer ── */
-  footer {
-    position: relative;
-    z-index: 1;
-    padding: 2rem 3rem;
-    border-top: 1px solid var(--panel-border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-copy {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-  }
-
-  .footer-links {
-    display: flex;
-    gap: 2rem;
-  }
-
-  .footer-links a {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-dim);
-    text-decoration: none;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .footer-links a:hover { color: var(--neon-green); }
-
-  /* ── Animations ── */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── Warning ticker ── */
-  .ticker-wrap {
-    width: 100%;
-    background: rgba(255, 0, 110, 0.08);
-    border-top: 1px solid rgba(255, 0, 110, 0.3);
-    border-bottom: 1px solid rgba(255, 0, 110, 0.3);
-    overflow: hidden;
-    padding: 0.6rem 0;
-    position: relative;
-    z-index: 1;
-  }
-
-  .ticker {
-    display: flex;
-    white-space: nowrap;
-    animation: ticker 30s linear infinite;
-    width: max-content;
-  }
-
-  .ticker-item {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--neon-pink);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 0 3rem;
-  }
-
-  .ticker-item::before {
-    content: '⚠';
-    margin-right: 1rem;
-  }
-
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* Glitch effect on title hover */
-  .hero-title:hover .highlight {
-    animation: glitch 0.3s steps(2) forwards;
-  }
-
-  @keyframes glitch {
-    0%   { text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-cyan); clip-path: inset(10% 0 80% 0); }
-    25%  { text-shadow: -2px 0 var(--neon-pink), 2px 0 var(--neon-cyan); clip-path: inset(80% 0 0% 0); }
-    50%  { text-shadow: 2px 2px var(--neon-pink); clip-path: inset(50% 0 30% 0); }
-    75%  { text-shadow: -1px -1px var(--neon-cyan); clip-path: inset(30% 0 50% 0); }
-    100% { text-shadow: var(--glow-green), 0 0 60px rgba(0,255,136,0.3); clip-path: none; }
-  }
+:root {
+  --ng: #00ff88; --nc: #00e5ff; --np: #ff006e;
+  --bg: #040d0a; --panel: rgba(0,255,136,0.04);
+  --border: rgba(0,255,136,0.2); --dim: #5a8a72;
+  --body: #a8d4bc; --gg: 0 0 20px rgba(0,255,136,0.5);
+  --gc: 0 0 20px rgba(0,229,255,0.5); --gp: 0 0 20px rgba(255,0,110,0.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--body);font-family:'Rajdhani',sans-serif;font-weight:300;overflow-x:hidden;cursor:crosshair}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:999;animation:scanlines 8s linear infinite}
+@keyframes scanlines{0%{background-position:0 0}100%{background-position:0 100px}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:.75rem 2rem;background:rgba(4,13,10,0.95);border-bottom:1px solid var(--border);backdrop-filter:blur(10px)}
+.nav-logo{font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;color:var(--ng);letter-spacing:3px;text-shadow:var(--gg)}
+.nav-logo span{color:var(--np)}
+.nav-links{display:flex;gap:1.5rem;list-style:none;flex-wrap:wrap}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--dim);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .2s,text-shadow .2s}
+.nav-links a:hover{color:var(--nc);text-shadow:var(--gc)}
+.status-dot{width:7px;height:7px;background:var(--ng);border-radius:50%;box-shadow:var(--gg);animation:pulse 2s ease-in-out infinite;display:inline-block;margin-right:.4rem}
+.nav-status{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--ng);letter-spacing:1px}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+/* ── HERO ── */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8rem 3rem 4rem;overflow:hidden;z-index:1}
+.eyebrow{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--np);letter-spacing:4px;text-transform:uppercase;margin-bottom:1.5rem;animation:fadeUp .6s .2s both}
+.hero-title{font-family:'Orbitron',monospace;font-size:clamp(2.5rem,6vw,6rem);font-weight:900;line-height:1;color:#fff;animation:fadeUp .6s .4s both}
+.hero-title .g{color:var(--ng);text-shadow:var(--gg),0 0 60px rgba(0,255,136,.3);display:block}
+.hero-title .c{color:var(--nc);text-shadow:var(--gc)}
+.hero-sub{font-family:'Share Tech Mono',monospace;font-size:.85rem;color:var(--dim);margin-top:2rem;max-width:550px;line-height:1.9;animation:fadeUp .6s .6s both}
+.hero-cta{display:flex;gap:1.5rem;margin-top:3rem;animation:fadeUp .6s .8s both;flex-wrap:wrap}
+.btn{font-family:'Orbitron',monospace;font-size:.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:.9rem 2rem;cursor:pointer;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));transition:all .2s;text-decoration:none;display:inline-block;border:none}
+.btn-g{background:var(--ng);color:var(--bg)}.btn-g:hover{box-shadow:var(--gg),0 0 40px rgba(0,255,136,.4);transform:translateY(-2px)}
+.btn-c{background:transparent;color:var(--nc);border:1px solid var(--nc)}.btn-c:hover{background:rgba(0,229,255,.1);box-shadow:var(--gc)}
+.btn-p{background:transparent;color:var(--np);border:1px solid var(--np)}.btn-p:hover{background:rgba(255,0,110,.1);box-shadow:var(--gp)}
+.hero-rat{position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:18rem;opacity:.06;animation:float 6s ease-in-out infinite;user-select:none;pointer-events:none}
+@keyframes float{0%,100%{transform:translateY(-50%) rotate(-5deg)}50%{transform:translateY(calc(-50% - 20px)) rotate(5deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── STATS ── */
+.stats-bar{position:relative;z-index:1;display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--panel);flex-wrap:wrap}
+.stat{flex:1;min-width:120px;padding:1.5rem;text-align:center;border-right:1px solid var(--border);transition:background .3s}
+.stat:last-child{border-right:none}.stat:hover{background:rgba(0,255,136,.06)}
+.stat-n{font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:var(--ng);text-shadow:var(--gg);display:block;line-height:1}
+.stat-l{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-top:.4rem;display:block}
+
+/* ── TICKER ── */
+.ticker-wrap{width:100%;background:rgba(255,0,110,.07);border-top:1px solid rgba(255,0,110,.3);border-bottom:1px solid rgba(255,0,110,.3);overflow:hidden;padding:.5rem 0;position:relative;z-index:1}
+.ticker{display:flex;white-space:nowrap;animation:tick 35s linear infinite;width:max-content}
+.tick-item{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--np);letter-spacing:2px;text-transform:uppercase;padding:0 3rem}
+.tick-item::before{content:'⚠';margin-right:1rem}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── SECTION BASE ── */
+.section{position:relative;z-index:1;padding:5rem 3rem;max-width:1200px;margin:0 auto}
+.section-full{position:relative;z-index:1;padding:5rem 3rem}
+.stag{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--np);letter-spacing:4px;text-transform:uppercase;margin-bottom:.75rem;display:block}
+.stitle{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,3vw,2.5rem);font-weight:700;color:#fff;margin-bottom:3rem;line-height:1.2}
+.stitle .a{color:var(--ng)}
+
+/* ── DIAGNOSTIC SCANNER ── */
+.diag-container{background:rgba(0,229,255,.03);border:1px solid rgba(0,229,255,.2);padding:2.5rem;max-width:900px;margin:0 auto}
+.diag-steps{display:flex;gap:0;margin-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.diag-step-tab{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;padding:.75rem 1.5rem;color:var(--dim);border-bottom:2px solid transparent;transition:all .3s;cursor:default;text-transform:uppercase}
+.diag-step-tab.active{color:var(--nc);border-bottom-color:var(--nc)}
+.diag-step-tab.done{color:var(--ng)}
+.diag-panel{display:none}.diag-panel.active{display:block}
+.species-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:2rem}
+.species-card{border:1px solid var(--border);padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all .3s;background:transparent}
+.species-card:hover,.species-card.selected{border-color:var(--nc);background:rgba(0,229,255,.06);box-shadow:var(--gc)}
+.species-card .icon{font-size:2.5rem;display:block;margin-bottom:.75rem}
+.species-card .name{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--nc);letter-spacing:1px;text-transform:uppercase}
+.symptom-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin-bottom:2rem}
+.symptom-chip{border:1px solid var(--border);padding:.6rem 1rem;cursor:pointer;transition:all .2s;font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:.5rem;background:transparent}
+.symptom-chip::before{content:'○';font-size:.8rem;transition:all .2s;color:var(--dim)}
+.symptom-chip:hover{border-color:var(--ng);color:var(--body)}
+.symptom-chip.selected{border-color:var(--ng);color:var(--ng);background:rgba(0,255,136,.05)}
+.symptom-chip.selected::before{content:'◉';color:var(--ng)}
+.scan-screen{background:#000;border:1px solid rgba(0,255,136,.3);padding:1.5rem;font-family:'Share Tech Mono',monospace;font-size:.65rem;height:220px;overflow:hidden;position:relative;margin-bottom:1.5rem}
+.scan-log{line-height:2;color:var(--dim)}
+.scan-log .ok{color:var(--ng)}.scan-log .warn{color:#ffaa00}.scan-log .err{color:var(--np)}
+.scan-progress-wrap{margin-bottom:1rem}
+.scan-progress-label{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--dim);letter-spacing:2px;margin-bottom:.4rem;display:flex;justify-content:space-between}
+.scan-bar{height:4px;background:rgba(0,255,136,.1);position:relative;overflow:hidden}
+.scan-bar-fill{height:100%;background:linear-gradient(90deg,var(--ng),var(--nc));width:0%;transition:width .3s ease;box-shadow:0 0 10px rgba(0,255,136,.5)}
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.fault-card{border:1px solid;padding:1rem;position:relative}
+.fault-card.critical{border-color:rgba(255,0,110,.5);background:rgba(255,0,110,.04)}
+.fault-card.warning{border-color:rgba(255,170,0,.4);background:rgba(255,170,0,.03)}
+.fault-card.ok{border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.03)}
+.fault-sev{font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;position:absolute;top:.75rem;right:.75rem;padding:.2rem .5rem;border-radius:0}
+.fault-sev.critical{color:var(--np);border:1px solid rgba(255,0,110,.4)}.fault-sev.warning{color:#ffaa00;border:1px solid rgba(255,170,0,.4)}.fault-sev.ok{color:var(--ng);border:1px solid rgba(0,255,136,.3)}
+.fault-code{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--dim);letter-spacing:1px;margin-bottom:.3rem}
+.fault-name{font-family:'Orbitron',monospace;font-size:.75rem;color:#fff;font-weight:700;margin-bottom:.4rem}
+.fault-desc{font-size:.8rem;color:var(--body);line-height:1.6}
+.report-total{border:1px solid var(--ng);padding:1.25rem;display:flex;justify-content:space-between;align-items:center;background:rgba(0,255,136,.04)}
+.report-total-label{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+.report-total-price{font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;color:var(--ng);text-shadow:var(--gg)}
+
+/* ── SERVICES ── */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5px;background:var(--border);border:1.5px solid var(--border)}
+.service-card{background:var(--bg);padding:2.5rem;transition:background .3s;position:relative;overflow:hidden}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ng);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.service-card:hover{background:rgba(0,255,136,.03)}.service-card:hover::before{transform:scaleX(1)}
+.svc-icon{font-size:2.5rem;display:block;margin-bottom:1.5rem}
+.svc-name{font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;color:var(--nc);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem}
+.svc-desc{font-size:.95rem;color:var(--body);line-height:1.7;margin-bottom:1.5rem}
+.svc-price{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--ng);letter-spacing:1px}
+
+/* ── QUOTE BUILDER ── */
+.quote-layout{display:grid;grid-template-columns:1fr 380px;gap:3rem;align-items:start}
+.quote-form{display:flex;flex-direction:column;gap:2rem}
+.qfield{display:flex;flex-direction:column;gap:.5rem}
+.qlabel{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--ng);letter-spacing:3px;text-transform:uppercase}
+.qsel{background:rgba(0,255,136,.03);border:1px solid var(--border);color:var(--body);font-family:'Share Tech Mono',monospace;font-size:.75rem;padding:.8rem 1rem;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;-webkit-appearance:none;cursor:pointer}
+.qsel:focus{border-color:var(--nc);box-shadow:var(--gc)}
+.qsel option{background:#040d0a}
+.issues-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.issue-toggle{border:1px solid var(--border);padding:.6rem .8rem;cursor:pointer;transition:all .2s;font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase;background:transparent;display:flex;justify-content:space-between;align-items:center}
+.issue-toggle:hover{border-color:var(--ng);color:var(--body)}
+.issue-toggle.on{border-color:var(--ng);color:var(--ng);background:rgba(0,255,136,.05)}
+.issue-price{color:var(--dim);font-size:.55rem;transition:color .2s}
+.issue-toggle.on .issue-price{color:var(--ng)}
+.quote-panel{background:rgba(0,255,136,.04);border:1px solid var(--border);padding:2rem;position:sticky;top:80px}
+.quote-panel-title{font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;color:var(--ng);letter-spacing:3px;text-transform:uppercase;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.quote-line{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid rgba(0,255,136,.08);font-family:'Share Tech Mono',monospace;font-size:.65rem}
+.quote-line-label{color:var(--dim)}.quote-line-val{color:var(--body)}
+.quote-empty{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:1px;text-align:center;padding:2rem 0;opacity:.5}
+.quote-total-row{display:flex;justify-content:space-between;align-items:center;padding-top:1.25rem;margin-top:.5rem}
+.quote-total-label{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+.quote-total-val{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--ng);text-shadow:var(--gg);transition:all .3s}
+.quote-note{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px;margin-top:1rem;line-height:1.8;padding-top:1rem;border-top:1px solid var(--border)}
+
+/* ── ANATOMY MAP ── */
+.anatomy-layout{display:grid;grid-template-columns:1fr 320px;gap:3rem;align-items:start}
+.anatomy-svg-wrap{background:rgba(0,0,0,.4);border:1px solid var(--border);padding:1.5rem;position:relative}
+.anatomy-svg-wrap svg{width:100%;height:auto;display:block}
+.hotspot{cursor:pointer;transition:all .3s}
+.hotspot circle.ring{fill:none;stroke:var(--nc);stroke-width:1.5;opacity:.6;transition:all .3s}
+.hotspot circle.dot{fill:var(--nc);transition:all .3s}
+.hotspot:hover circle.ring,.hotspot.active circle.ring{stroke:var(--ng);opacity:1;r:14}
+.hotspot:hover circle.dot,.hotspot.active circle.dot{fill:var(--ng);filter:drop-shadow(0 0 8px var(--ng))}
+.hotspot .label{font-family:'Share Tech Mono',monospace;font-size:9px;fill:var(--dim);pointer-events:none;transition:fill .3s}
+.hotspot:hover .label,.hotspot.active .label{fill:var(--ng)}
+.zone-panel{background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.2);padding:1.75rem;position:sticky;top:80px;min-height:320px}
+.zone-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:280px;opacity:.3;text-align:center}
+.zone-empty .icon{font-size:3rem;margin-bottom:1rem}
+.zone-empty p{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:2px;color:var(--dim)}
+.zone-content{display:none}.zone-content.active{display:block}
+.zone-tag{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--nc);letter-spacing:3px;text-transform:uppercase;margin-bottom:.5rem}
+.zone-title{font-family:'Orbitron',monospace;font-size:.95rem;font-weight:700;color:#fff;margin-bottom:1rem}
+.zone-desc{font-size:.9rem;color:var(--body);line-height:1.7;margin-bottom:1.25rem}
+.zone-services{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.25rem}
+.zone-service{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--ng);letter-spacing:1px;display:flex;align-items:center;gap:.5rem}
+.zone-service::before{content:'→'}
+.zone-price{font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;color:var(--ng);text-shadow:var(--gg)}
+
+/* ── ABOUT TERMINAL ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.terminal{background:rgba(0,255,136,.03);border:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:.75rem;padding:2rem}
+.t-head{display:flex;gap:.5rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.t-dot{width:10px;height:10px;border-radius:50%}
+.t-dot.r{background:#ff5f57}.t-dot.y{background:#febc2e}.t-dot.g{background:#28c840}
+.t-line{color:var(--dim);line-height:2}
+.t-line .cmd{color:var(--ng)}.t-line .val{color:var(--nc)}.t-line .ok{color:var(--ng)}
+.blink{display:inline-block;width:8px;height:14px;background:var(--ng);vertical-align:middle;animation:blink 1.2s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.certs{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.5rem}
+.cert{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--np);border:1px solid rgba(255,0,110,.4);padding:.3rem .7rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s}
+.cert:hover{background:rgba(255,0,110,.1)}
+
+/* ── REPAIR TIMELINE ── */
+.timeline-header{background:rgba(0,255,136,.04);border:1px solid var(--border);padding:1.25rem 2rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.timeline-unit{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:1px}
+.timeline-unit span{color:var(--nc)}
+.timeline-live{display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--np);letter-spacing:2px;text-transform:uppercase}
+.timeline-live .dot{width:7px;height:7px;border-radius:50%;background:var(--np);animation:pulse 1.5s ease-in-out infinite}
+.steps-track{display:flex;position:relative;margin-bottom:2rem}
+.steps-track::before{content:'';position:absolute;top:28px;left:0;right:0;height:2px;background:rgba(0,255,136,.1);z-index:0}
+.steps-track::after{content:'';position:absolute;top:28px;left:0;width:55%;height:2px;background:linear-gradient(90deg,var(--ng),var(--nc));z-index:0;box-shadow:0 0 10px rgba(0,255,136,.4)}
+.t-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;cursor:pointer}
+.t-step-dot{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:.65rem;font-weight:700;border:2px solid var(--border);background:var(--bg);transition:all .3s;margin-bottom:.75rem}
+.t-step.done .t-step-dot{background:rgba(0,255,136,.1);border-color:var(--ng);color:var(--ng);box-shadow:var(--gg)}
+.t-step.current .t-step-dot{background:rgba(0,229,255,.1);border-color:var(--nc);color:var(--nc);box-shadow:var(--gc);animation:pulse 2s ease-in-out infinite}
+.t-step.pending .t-step-dot{color:var(--dim)}
+.t-step-label{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase;text-align:center}
+.t-step.done .t-step-label,.t-step.current .t-step-label{color:var(--body)}
+.timeline-detail{background:rgba(0,0,0,.3);border:1px solid var(--border);padding:1.5rem;font-family:'Share Tech Mono',monospace}
+.tl-detail-title{font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;color:#fff;margin-bottom:.75rem}
+.tl-log{display:flex;flex-direction:column;gap:.5rem}
+.tl-log-item{font-size:.6rem;color:var(--dim);letter-spacing:1px;display:flex;gap:1rem}
+.tl-log-time{color:var(--nc);flex-shrink:0}
+.tl-log-text .ok{color:var(--ng)}.tl-log-text .warn{color:#ffaa00}
+
+/* ── PARTS CATALOGUE ── */
+.parts-controls{display:flex;gap:1rem;margin-bottom:2rem;align-items:center;flex-wrap:wrap}
+.parts-search{flex:1;min-width:200px;background:rgba(0,255,136,.03);border:1px solid var(--border);color:var(--body);font-family:'Share Tech Mono',monospace;font-size:.7rem;padding:.75rem 1rem;outline:none;transition:border-color .2s}
+.parts-search:focus{border-color:var(--nc)}.parts-search::placeholder{color:var(--dim)}
+.cat-filters{display:flex;gap:.5rem;flex-wrap:wrap}
+.cat-btn{font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;padding:.5rem 1rem;border:1px solid var(--border);color:var(--dim);background:transparent;cursor:pointer;transition:all .2s}
+.cat-btn:hover{border-color:var(--nc);color:var(--nc)}
+.cat-btn.active{border-color:var(--ng);color:var(--ng);background:rgba(0,255,136,.06)}
+.parts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.part-card{border:1px solid var(--border);padding:1.25rem;background:var(--bg);transition:all .3s;position:relative}
+.part-card:hover{border-color:rgba(0,229,255,.4);background:rgba(0,229,255,.03)}
+.part-cat-badge{font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:2px;text-transform:uppercase;padding:.2rem .5rem;margin-bottom:.75rem;display:inline-block}
+.part-cat-badge.neural{color:#a78bfa;border:1px solid rgba(167,139,250,.3)}
+.part-cat-badge.optical{color:var(--nc);border:1px solid rgba(0,229,255,.3)}
+.part-cat-badge.servo{color:var(--ng);border:1px solid rgba(0,255,136,.3)}
+.part-cat-badge.power{color:#facc15;border:1px solid rgba(250,204,21,.3)}
+.part-cat-badge.comms{color:var(--np);border:1px solid rgba(255,0,110,.3)}
+.part-cat-badge.structural{color:#fb923c;border:1px solid rgba(251,146,60,.3)}
+.part-name{font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;color:#fff;margin-bottom:.4rem;line-height:1.3}
+.part-compat{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px;margin-bottom:.75rem}
+.part-footer{display:flex;justify-content:space-between;align-items:center}
+.part-price{font-family:'Orbitron',monospace;font-size:.85rem;font-weight:700;color:var(--ng)}
+.part-stock{font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:1px;text-transform:uppercase;padding:.2rem .5rem}
+.part-stock.in{color:var(--ng);border:1px solid rgba(0,255,136,.3)}
+.part-stock.low{color:#ffaa00;border:1px solid rgba(255,170,0,.3)}
+.part-stock.out{color:var(--np);border:1px solid rgba(255,0,110,.3)}
+.parts-empty{grid-column:1/-1;text-align:center;padding:3rem;font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--dim);letter-spacing:2px}
+
+/* ── GALLERY ── */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.gallery-card{border:1px solid var(--border);overflow:hidden;transition:border-color .3s;background:var(--bg)}
+.gallery-card:hover{border-color:rgba(0,229,255,.4)}
+.gallery-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;overflow:hidden;transition:background .5s}
+.gallery-img.before-bg{background:linear-gradient(135deg,rgba(255,0,110,.1),rgba(255,0,110,.02))}
+.gallery-img.after-bg{background:linear-gradient(135deg,rgba(0,255,136,.1),rgba(0,255,136,.02))}
+.gallery-badge{position:absolute;top:.75rem;left:.75rem;font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;padding:.25rem .6rem}
+.gallery-badge.before{color:var(--np);border:1px solid rgba(255,0,110,.4);background:rgba(255,0,110,.07)}
+.gallery-badge.after{color:var(--ng);border:1px solid rgba(0,255,136,.4);background:rgba(0,255,136,.07)}
+.gallery-body{padding:1.25rem}
+.gallery-species{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--nc);letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem}
+.gallery-title{font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;color:#fff;margin-bottom:.5rem}
+.gallery-desc{font-size:.85rem;color:var(--body);line-height:1.6;margin-bottom:1rem}
+.gallery-toggle{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:.5rem 1rem;border:1px solid var(--border);color:var(--dim);background:transparent;cursor:pointer;transition:all .2s;width:100%}
+.gallery-toggle:hover{border-color:var(--nc);color:var(--nc)}
+
+/* ── TESTIMONIALS ── */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.testi-card{border:1px solid var(--border);padding:2rem;background:var(--bg);transition:border-color .3s}
+.testi-card:hover{border-color:rgba(0,229,255,.4)}
+.qmark{font-family:'Orbitron',monospace;font-size:4rem;color:var(--nc);opacity:.15;line-height:1;margin-bottom:-1rem}
+.testi-text{font-size:.9rem;line-height:1.8;color:var(--body);margin-bottom:1.5rem;font-style:italic}
+.testi-author{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--nc);letter-spacing:2px;text-transform:uppercase}
+.testi-role{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px;margin-top:.25rem}
+
+/* ── FAQ ── */
+.faq-list{display:flex;flex-direction:column;gap:.75rem;max-width:800px;margin:0 auto}
+.faq-item{border:1px solid var(--border);background:var(--bg);overflow:hidden;transition:border-color .3s}
+.faq-item:hover{border-color:rgba(0,229,255,.3)}
+.faq-item.open{border-color:rgba(0,255,136,.4)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;cursor:pointer;font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;color:var(--body);letter-spacing:1px;transition:color .2s}
+.faq-item.open .faq-q{color:var(--ng)}
+.faq-arrow{font-family:'Share Tech Mono',monospace;font-size:1rem;color:var(--dim);transition:transform .3s,color .3s;flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(45deg);color:var(--ng)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s}
+.faq-item.open .faq-a{max-height:300px;padding:0 1.5rem 1.25rem}
+.faq-a p{font-size:.9rem;color:var(--body);line-height:1.8}
+.faq-a .highlight{color:var(--ng)}
+
+/* ── CONTACT ── */
+.contact-inner{max-width:700px;margin:0 auto;text-align:center}
+.contact-form{display:flex;flex-direction:column;gap:1.25rem;margin-top:3rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem;text-align:left}
+.form-label{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--ng);letter-spacing:2px;text-transform:uppercase}
+.form-input,.form-select,.form-textarea{background:rgba(0,255,136,.03);border:1px solid var(--border);color:var(--body);font-family:'Share Tech Mono',monospace;font-size:.75rem;padding:.85rem 1rem;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;-webkit-appearance:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--nc);box-shadow:0 0 12px rgba(0,229,255,.2)}
+.form-textarea{min-height:100px;resize:vertical}
+.form-select option{background:#040d0a}
+
+/* ── FLOATING CHAT ── */
+.chat-fab{position:fixed;bottom:2rem;right:2rem;z-index:300;width:56px;height:56px;background:var(--ng);border:none;cursor:pointer;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:var(--gg);transition:transform .2s,box-shadow .2s}
+.chat-fab:hover{transform:scale(1.1);box-shadow:0 0 30px rgba(0,255,136,.7)}
+.chat-fab .chat-icon{transition:transform .3s}
+.chat-fab.open .chat-icon{transform:rotate(90deg)}
+.chat-window{position:fixed;bottom:5.5rem;right:2rem;z-index:300;width:380px;max-height:520px;display:flex;flex-direction:column;background:rgba(4,13,10,.98);border:1px solid rgba(0,255,136,.3);box-shadow:0 0 40px rgba(0,255,136,.2);transform:translateY(20px) scale(.95);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.chat-window.open{transform:translateY(0) scale(1);opacity:1;pointer-events:all}
+.chat-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem;flex-shrink:0}
+.chat-avatar{width:36px;height:36px;background:rgba(0,255,136,.1);border:1px solid var(--ng);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.chat-name{font-family:'Orbitron',monospace;font-size:.65rem;font-weight:700;color:var(--ng);letter-spacing:2px}
+.chat-subtitle{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px;margin-top:.1rem}
+.chat-online{margin-left:auto;display:flex;align-items:center;gap:.4rem;font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--ng);letter-spacing:1px}
+.chat-online .dot{width:6px;height:6px;border-radius:50%;background:var(--ng);animation:pulse 2s ease-in-out infinite}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.75rem;min-height:280px;max-height:320px}
+.chat-messages::-webkit-scrollbar{width:3px}.chat-messages::-webkit-scrollbar-track{background:transparent}.chat-messages::-webkit-scrollbar-thumb{background:var(--border)}
+.msg{max-width:85%;padding:.75rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.65rem;line-height:1.7;letter-spacing:.3px}
+.msg.bot{align-self:flex-start;background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);color:var(--body);border-bottom-left-radius:0}
+.msg.user{align-self:flex-end;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.25);color:var(--nc);text-align:right}
+.msg.thinking{align-self:flex-start;background:rgba(0,255,136,.03);border:1px solid rgba(0,255,136,.1);color:var(--dim)}
+.msg-dots{display:inline-flex;gap:3px;align-items:center}
+.msg-dots span{width:5px;height:5px;border-radius:50%;background:var(--dim);animation:dotBounce 1.2s ease-in-out infinite}
+.msg-dots span:nth-child(2){animation-delay:.2s}.msg-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dotBounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.chat-input-row{display:flex;border-top:1px solid var(--border);flex-shrink:0}
+.chat-input{flex:1;background:transparent;border:none;color:var(--body);font-family:'Share Tech Mono',monospace;font-size:.65rem;padding:.85rem 1rem;outline:none;letter-spacing:.5px}
+.chat-input::placeholder{color:var(--dim)}
+.chat-send{background:transparent;border:none;border-left:1px solid var(--border);padding:.85rem 1rem;cursor:pointer;color:var(--ng);font-size:1rem;transition:background .2s;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:1px}
+.chat-send:hover{background:rgba(0,255,136,.07)}
+.chat-api-note{font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--dim);padding:.4rem 1rem;border-top:1px solid rgba(0,255,136,.07);letter-spacing:.5px;text-align:center;flex-shrink:0}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;padding:2rem 3rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:2px}
+.footer-links{display:flex;gap:2rem;flex-wrap:wrap}
+.footer-links a{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--ng)}
+
+/* ── SECTION DIVIDERS ── */
+.section-divider{border:none;border-top:1px solid var(--border);margin:0}
+.dark-section{background:rgba(0,0,0,.3);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+  .quote-layout,.anatomy-layout,.about-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .report-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .chat-window{width:calc(100vw - 2rem);right:1rem}
+  .hero-rat{display:none}
+  .steps-track{flex-wrap:wrap;gap:1rem}
+}
 </style>
 </head>
 <body>
 
-<!-- Navigation -->
+<!-- ── NAV ── -->
 <nav>
   <div class="nav-logo">CYBER<span>RODENT</span>.REPAIR</div>
   <ul class="nav-links">
+    <li><a href="#diagnostics">Diagnostics</a></li>
     <li><a href="#services">Services</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#process">Process</a></li>
+    <li><a href="#quote">Quote</a></li>
+    <li><a href="#anatomy">Anatomy</a></li>
+    <li><a href="#parts">Parts</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <div class="nav-status">
-    <div class="status-dot"></div>
-    WORKSHOP ONLINE
-  </div>
+  <div class="nav-status"><span class="status-dot"></span>WORKSHOP ONLINE</div>
 </nav>
 
-<!-- Hero -->
+<!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-eyebrow">// LICENSED &amp; CERTIFIED — SINCE 2031 //</div>
-  <h1 class="hero-title">
-    CYBERNETIC<br>
-    <span class="highlight">RODENT</span>
-    <span class="highlight2"> REPAIR</span><br>
-    SPECIALIST
-  </h1>
-  <p class="hero-sub">
-    When your augmented associates start glitching, only one name matters.<br>
-    Expert diagnostics, servo realignment, and neural firmware updates<br>
-    for all makes and models of cybernetically enhanced rodentia.
-  </p>
+  <div class="eyebrow">// LICENSED &amp; CERTIFIED — SINCE 2031 //</div>
+  <h1 class="hero-title">CYBERNETIC<br><span class="g">RODENT</span><span class="c"> REPAIR</span><br>SPECIALIST</h1>
+  <p class="hero-sub">When your augmented associates start glitching, only one name matters.<br>Expert diagnostics, servo realignment &amp; neural firmware updates<br>for all makes and models of cybernetically enhanced rodentia.</p>
   <div class="hero-cta">
-    <a href="#contact" class="btn-primary">Book Diagnostic</a>
-    <a href="#services" class="btn-secondary">View Services</a>
+    <a href="#diagnostics" class="btn btn-g">Run Diagnostics</a>
+    <a href="#quote" class="btn btn-c">Get a Quote</a>
+    <a href="#parts" class="btn btn-p">Parts Catalogue</a>
   </div>
-  <div class="hero-graphic">🐀</div>
+  <div class="hero-rat">🐀</div>
 </section>
 
-<!-- Stats -->
+<!-- ── STATS ── -->
 <div class="stats-bar">
-  <div class="stat-item">
-    <span class="stat-num">4,200+</span>
-    <span class="stat-label">Rodents Repaired</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num">99.7%</span>
-    <span class="stat-label">Neural Sync Rate</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num">38</span>
-    <span class="stat-label">Species Supported</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num">24/7</span>
-    <span class="stat-label">Emergency Callout</span>
-  </div>
+  <div class="stat"><span class="stat-n">4,200+</span><span class="stat-l">Rodents Repaired</span></div>
+  <div class="stat"><span class="stat-n">99.7%</span><span class="stat-l">Neural Sync Rate</span></div>
+  <div class="stat"><span class="stat-n">38</span><span class="stat-l">Species Supported</span></div>
+  <div class="stat"><span class="stat-n">24/7</span><span class="stat-l">Emergency Callout</span></div>
+  <div class="stat"><span class="stat-n">90</span><span class="stat-l">Day Warranty</span></div>
 </div>
 
-<!-- Ticker -->
+<!-- ── TICKER ── -->
 <div class="ticker-wrap">
   <div class="ticker">
-    <span class="ticker-item">Patch v4.12 now available for MK-III cybersquirrel units</span>
-    <span class="ticker-item">Recall notice: Hamster Mk9 tail-actuators — contact workshop immediately</span>
-    <span class="ticker-item">New: gerbil neural firmware with enhanced maze-pattern recognition</span>
-    <span class="ticker-item">Warning: Do not use off-brand whisker sensors — voiding warranty</span>
-    <span class="ticker-item">Patch v4.12 now available for MK-III cybersquirrel units</span>
-    <span class="ticker-item">Recall notice: Hamster Mk9 tail-actuators — contact workshop immediately</span>
-    <span class="ticker-item">New: gerbil neural firmware with enhanced maze-pattern recognition</span>
-    <span class="ticker-item">Warning: Do not use off-brand whisker sensors — voiding warranty</span>
+    <span class="tick-item">Patch v4.12 now available for MK-III cybersquirrel units</span>
+    <span class="tick-item">Recall notice: Hamster Mk9 tail-actuators — contact workshop immediately</span>
+    <span class="tick-item">New: gerbil neural firmware with enhanced maze-pattern recognition</span>
+    <span class="tick-item">Warning: Do not use off-brand whisker sensors — voids warranty</span>
+    <span class="tick-item">Holiday hours: Emergency callout available 25–27 Dec at +50% surcharge</span>
+    <span class="tick-item">Patch v4.12 now available for MK-III cybersquirrel units</span>
+    <span class="tick-item">Recall notice: Hamster Mk9 tail-actuators — contact workshop immediately</span>
+    <span class="tick-item">New: gerbil neural firmware with enhanced maze-pattern recognition</span>
+    <span class="tick-item">Warning: Do not use off-brand whisker sensors — voids warranty</span>
+    <span class="tick-item">Holiday hours: Emergency callout available 25–27 Dec at +50% surcharge</span>
   </div>
 </div>
 
-<!-- Services -->
-<div id="services" style="position:relative;z-index:1;padding:6rem 3rem;">
-  <p class="section-tag" style="max-width:1200px;margin:0 auto 0.75rem;">// WORKSHOP OFFERINGS //</p>
-  <h2 class="section-title" style="max-width:1200px;margin:0 auto 3rem;">Core <span class="accent">Services</span></h2>
-  <div class="services-grid">
-    <div class="service-card">
-      <span class="service-icon">🔬</span>
-      <div class="service-name">Full Diagnostic Scan</div>
-      <p class="service-desc">Comprehensive biomechatronic assessment covering all subsystems: locomotor servos, sensory arrays, neural interface boards, and whisker calibration. Includes a printed condition report with severity ratings.</p>
-      <div class="service-price">FROM 120 CR // EST. 45 MIN</div>
+<!-- ── DIAGNOSTIC SCANNER ── -->
+<div id="diagnostics" class="dark-section">
+<div class="section">
+  <span class="stag">// AI-POWERED FAULT DETECTION //</span>
+  <h2 class="stitle">Interactive <span class="a">Diagnostic</span> Scanner</h2>
+  <div class="diag-container">
+    <div class="diag-steps">
+      <div class="diag-step-tab active" id="tab-1">01 — Species</div>
+      <div class="diag-step-tab" id="tab-2">02 — Symptoms</div>
+      <div class="diag-step-tab" id="tab-3">03 — Scanning</div>
+      <div class="diag-step-tab" id="tab-4">04 — Report</div>
     </div>
-    <div class="service-card">
-      <span class="service-icon">⚙️</span>
-      <div class="service-name">Servo & Limb Repair</div>
-      <p class="service-desc">Replacement and recalibration of micro-actuator joints, titanium-alloy limb chassis, grip-tension modules, and scurry-pattern gait processors. OEM and aftermarket components available.</p>
-      <div class="service-price">FROM 280 CR // EST. 2–4 HRS</div>
+
+    <!-- STEP 1: Species -->
+    <div class="diag-panel active" id="panel-1">
+      <p style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--dim);letter-spacing:1px;margin-bottom:1.5rem">SELECT UNIT SPECIES TO BEGIN DIAGNOSTIC PROTOCOL:</p>
+      <div class="species-grid">
+        <div class="species-card" onclick="diagSelectSpecies('rat',this)"><span class="icon">🐀</span><div class="name">Rat</div></div>
+        <div class="species-card" onclick="diagSelectSpecies('mouse',this)"><span class="icon">🐁</span><div class="name">Mouse</div></div>
+        <div class="species-card" onclick="diagSelectSpecies('hamster',this)"><span class="icon">🐹</span><div class="name">Hamster</div></div>
+        <div class="species-card" onclick="diagSelectSpecies('squirrel',this)"><span class="icon">🐿️</span><div class="name">Squirrel</div></div>
+        <div class="species-card" onclick="diagSelectSpecies('gerbil',this)"><span class="icon">🐇</span><div class="name">Gerbil/Vole</div></div>
+        <div class="species-card" onclick="diagSelectSpecies('other',this)"><span class="icon">❓</span><div class="name">Unknown</div></div>
+      </div>
+      <button class="btn btn-c" id="diag-next-1" style="opacity:.3;cursor:not-allowed;" disabled onclick="diagStep2()">NEXT: SELECT SYMPTOMS →</button>
     </div>
-    <div class="service-card">
-      <span class="service-icon">🧠</span>
-      <div class="service-name">Neural Firmware Update</div>
-      <p class="service-desc">Safe over-socket flashing of the rodent's neural co-processor. Includes behavioural recalibration, memory defrag, threat-response tuning, and personality preservation backups.</p>
-      <div class="service-price">FROM 190 CR // EST. 1 HR</div>
+
+    <!-- STEP 2: Symptoms -->
+    <div class="diag-panel" id="panel-2">
+      <p style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--dim);letter-spacing:1px;margin-bottom:1.5rem">SELECT ALL OBSERVED MALFUNCTIONS (MULTI-SELECT):</p>
+      <div class="symptom-grid" id="symptom-grid"></div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <button class="btn btn-c" onclick="diagStep3()">INITIATE SCAN →</button>
+        <button class="btn" style="border:1px solid var(--border);color:var(--dim);background:transparent" onclick="diagBack1()">← BACK</button>
+      </div>
     </div>
-    <div class="service-card">
-      <span class="service-icon">👁️</span>
-      <div class="service-name">Optical Array Overhaul</div>
-      <p class="service-desc">Replacing degraded CMOS retinal implants, recalibrating depth perception modules, and updating night-vision kernel drivers. Compatible with all Oculus-Rodentia™ hardware generations.</p>
-      <div class="service-price">FROM 350 CR // EST. 3 HRS</div>
+
+    <!-- STEP 3: Scanning -->
+    <div class="diag-panel" id="panel-3">
+      <div class="scan-progress-wrap">
+        <div class="scan-progress-label"><span id="scan-stage-label">INITIALISING...</span><span id="scan-pct">0%</span></div>
+        <div class="scan-bar"><div class="scan-bar-fill" id="scan-bar-fill"></div></div>
+      </div>
+      <div class="scan-screen"><div class="scan-log" id="scan-log"></div></div>
     </div>
-    <div class="service-card">
-      <span class="service-icon">📡</span>
-      <div class="service-name">Comms & Telemetry</div>
-      <p class="service-desc">Repair and re-pairing of short-range squeakwave transceivers, GPS fur-tag integration, and hive-mind mesh network reconnection for colony-deployed units. GDPR-compliant data wipe available.</p>
-      <div class="service-price">FROM 160 CR // EST. 1–2 HRS</div>
-    </div>
-    <div class="service-card">
-      <span class="service-icon">🔋</span>
-      <div class="service-name">Power Cell Replacement</div>
-      <p class="service-desc">Swap-out of depleted thoracic micro-fusion cells or legacy lithium-polymer cores. Includes charge cycle recalibration and thermal runaway shielding upgrade for older units.</p>
-      <div class="service-price">FROM 220 CR // EST. 1.5 HRS</div>
+
+    <!-- STEP 4: Report -->
+    <div class="diag-panel" id="panel-4">
+      <div id="report-content"></div>
+      <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap">
+        <a href="#contact" class="btn btn-g">Book Repair →</a>
+        <a href="#quote" class="btn btn-c">Get Quote →</a>
+        <button class="btn" style="border:1px solid var(--border);color:var(--dim);background:transparent" onclick="diagReset()">← NEW SCAN</button>
+      </div>
     </div>
   </div>
 </div>
+</div>
 
-<!-- About -->
-<section id="about">
-  <p class="section-tag">// OPERATOR PROFILE //</p>
-  <h2 class="section-title">About the <span class="accent">Specialist</span></h2>
+<!-- ── SERVICES ── -->
+<div id="services" style="position:relative;z-index:1;padding:5rem 3rem;">
+<div style="max-width:1200px;margin:0 auto">
+  <span class="stag">// WORKSHOP OFFERINGS //</span>
+  <h2 class="stitle">Core <span class="a">Services</span></h2>
+  <div class="services-grid reveal">
+    <div class="service-card"><span class="svc-icon">🔬</span><div class="svc-name">Full Diagnostic Scan</div><p class="svc-desc">Comprehensive biomechatronic assessment covering all subsystems: locomotor servos, sensory arrays, neural interface boards, and whisker calibration.</p><div class="svc-price">FROM 120 CR // EST. 45 MIN</div></div>
+    <div class="service-card"><span class="svc-icon">⚙️</span><div class="svc-name">Servo &amp; Limb Repair</div><p class="svc-desc">Replacement and recalibration of micro-actuator joints, titanium-alloy limb chassis, grip-tension modules, and scurry-pattern gait processors.</p><div class="svc-price">FROM 280 CR // EST. 2–4 HRS</div></div>
+    <div class="service-card"><span class="svc-icon">🧠</span><div class="svc-name">Neural Firmware Update</div><p class="svc-desc">Safe over-socket flashing of the neural co-processor. Includes behavioural recalibration, memory defrag, threat-response tuning, and personality backups.</p><div class="svc-price">FROM 190 CR // EST. 1 HR</div></div>
+    <div class="service-card"><span class="svc-icon">👁️</span><div class="svc-name">Optical Array Overhaul</div><p class="svc-desc">Replacing degraded CMOS retinal implants, recalibrating depth perception modules, and updating night-vision kernel drivers for all Oculus-Rodentia™ generations.</p><div class="svc-price">FROM 350 CR // EST. 3 HRS</div></div>
+    <div class="service-card"><span class="svc-icon">📡</span><div class="svc-name">Comms &amp; Telemetry</div><p class="svc-desc">Repair of squeakwave transceivers, GPS fur-tag integration, and hive-mind mesh network reconnection for colony-deployed units.</p><div class="svc-price">FROM 160 CR // EST. 1–2 HRS</div></div>
+    <div class="service-card"><span class="svc-icon">🔋</span><div class="svc-name">Power Cell Replacement</div><p class="svc-desc">Swap-out of depleted thoracic micro-fusion cells or legacy lithium-polymer cores. Includes charge cycle recalibration and thermal runaway shielding.</p><div class="svc-price">FROM 220 CR // EST. 1.5 HRS</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ── QUOTE BUILDER ── -->
+<div id="quote" class="dark-section">
+<div class="section">
+  <span class="stag">// INSTANT PRICING //</span>
+  <h2 class="stitle">Repair Cost <span class="a">Estimator</span></h2>
+  <div class="quote-layout">
+    <div class="quote-form">
+      <div class="qfield">
+        <label class="qlabel">Unit Species</label>
+        <select class="qsel" id="q-species" onchange="updateQuote()">
+          <option value="">— Select species —</option>
+          <option value="rat">Rat (Rattus cyberneticus)</option>
+          <option value="mouse">Mouse (Mus augmentis)</option>
+          <option value="hamster">Hamster (Cricetus mechanicus)</option>
+          <option value="squirrel">Squirrel (Sciurus technologicus)</option>
+          <option value="gerbil">Gerbil / Vole</option>
+        </select>
+      </div>
+      <div class="qfield">
+        <label class="qlabel">Required Services</label>
+        <div class="issues-grid" id="issues-grid"></div>
+      </div>
+      <div class="qfield">
+        <label class="qlabel">Urgency</label>
+        <select class="qsel" id="q-urgency" onchange="updateQuote()">
+          <option value="routine">Routine (next available)</option>
+          <option value="elevated">Elevated (+15%) — 48hrs</option>
+          <option value="urgent">Urgent (+30%) — same day</option>
+          <option value="critical">Critical (+60%) — emergency</option>
+        </select>
+      </div>
+    </div>
+    <div class="quote-panel">
+      <div class="quote-panel-title">// ESTIMATE SUMMARY //</div>
+      <div id="quote-lines"><p class="quote-empty">Select services above to<br>generate your estimate.</p></div>
+      <div class="quote-total-row" id="quote-total-row" style="display:none">
+        <span class="quote-total-label">ESTIMATED TOTAL</span>
+        <span class="quote-total-val" id="quote-total">0 CR</span>
+      </div>
+      <p class="quote-note">* Estimate is indicative. Final price confirmed after diagnostic scan. Labour at 45 CR/hr. Parts additional. Emergency callout subject to travel surcharge.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── ANATOMY MAP ── -->
+<div id="anatomy" style="position:relative;z-index:1;padding:5rem 3rem;">
+<div style="max-width:1200px;margin:0 auto">
+  <span class="stag">// INTERACTIVE SCHEMATIC //</span>
+  <h2 class="stitle">Unit <span class="a">Anatomy</span> Map</h2>
+  <p style="font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:1px;margin-bottom:2rem;margin-top:-2rem">CLICK ANY HIGHLIGHTED ZONE FOR TECHNICAL DETAILS AND ASSOCIATED SERVICES:</p>
+  <div class="anatomy-layout">
+    <div class="anatomy-svg-wrap">
+      <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" id="anatomy-svg">
+        <!-- Grid -->
+        <defs>
+          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,255,136,0.05)" stroke-width="1"/>
+          </pattern>
+          <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect width="680" height="340" fill="url(#grid)"/>
+
+        <!-- Tail -->
+        <path d="M 30 200 Q 80 175 130 195 Q 165 210 185 225" fill="none" stroke="rgba(0,255,136,0.25)" stroke-width="8" stroke-linecap="round"/>
+        <path d="M 30 200 Q 80 175 130 195 Q 165 210 185 225" fill="none" stroke="rgba(0,255,136,0.08)" stroke-width="14" stroke-linecap="round"/>
+
+        <!-- Body -->
+        <ellipse cx="310" cy="220" rx="135" ry="70" fill="rgba(0,255,136,0.04)" stroke="rgba(0,255,136,0.3)" stroke-width="1.5"/>
+        <ellipse cx="310" cy="220" rx="135" ry="70" fill="none" stroke="rgba(0,255,136,0.08)" stroke-width="8"/>
+
+        <!-- Body circuit lines -->
+        <line x1="220" y1="220" x2="400" y2="220" stroke="rgba(0,229,255,0.12)" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="310" y1="155" x2="310" y2="285" stroke="rgba(0,229,255,0.12)" stroke-width="1" stroke-dasharray="4,4"/>
+        <circle cx="310" cy="220" r="20" fill="none" stroke="rgba(0,229,255,0.15)" stroke-width="1"/>
+        <circle cx="310" cy="220" r="8" fill="rgba(0,229,255,0.1)" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+
+        <!-- Neck -->
+        <path d="M 440 200 Q 460 195 468 188" fill="none" stroke="rgba(0,255,136,0.25)" stroke-width="14" stroke-linecap="round"/>
+
+        <!-- Head -->
+        <circle cx="500" cy="178" r="56" fill="rgba(0,255,136,0.04)" stroke="rgba(0,255,136,0.3)" stroke-width="1.5"/>
+        <circle cx="500" cy="178" r="56" fill="none" stroke="rgba(0,255,136,0.06)" stroke-width="8"/>
+
+        <!-- Ear -->
+        <ellipse cx="483" cy="124" rx="16" ry="24" fill="rgba(0,255,136,0.06)" stroke="rgba(0,255,136,0.25)" stroke-width="1.5" transform="rotate(-10,483,124)"/>
+
+        <!-- Snout -->
+        <path d="M 548 162 L 590 178 L 548 194 Z" fill="rgba(0,255,136,0.05)" stroke="rgba(0,255,136,0.25)" stroke-width="1.5"/>
+        <!-- Whiskers -->
+        <line x1="548" y1="172" x2="610" y2="162" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
+        <line x1="548" y1="178" x2="615" y2="178" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
+        <line x1="548" y1="184" x2="610" y2="194" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
+
+        <!-- Eye -->
+        <circle cx="526" cy="165" r="9" fill="rgba(0,229,255,0.1)" stroke="rgba(0,229,255,0.5)" stroke-width="1.5"/>
+        <circle cx="526" cy="165" r="4" fill="rgba(0,229,255,0.4)"/>
+
+        <!-- Front legs -->
+        <rect x="355" y="282" width="18" height="44" rx="6" fill="rgba(0,255,136,0.05)" stroke="rgba(0,255,136,0.25)" stroke-width="1.5"/>
+        <rect x="385" y="282" width="18" height="44" rx="6" fill="rgba(0,255,136,0.05)" stroke="rgba(0,255,136,0.25)" stroke-width="1.5"/>
+        <!-- Rear legs -->
+        <rect x="215" y="282" width="18" height="44" rx="6" fill="rgba(0,255,136,0.05)" stroke="rgba(0,255,136,0.25)" stroke-width="1.5"/>
+        <rect x="245" y="282" width="18" height="44" rx="6" fill="rgba(0,255,136,0.05)" stroke="rgba(0,255,136,0.25)" stroke-width="1.5"/>
+
+        <!-- Connection dashes -->
+        <line x1="500" y1="122" x2="500" y2="95" stroke="rgba(0,229,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="526" y1="156" x2="540" y2="130" stroke="rgba(0,229,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="590" y1="178" x2="620" y2="178" stroke="rgba(0,229,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="310" y1="152" x2="310" y2="110" stroke="rgba(0,229,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="375" y1="282" x2="355" y2="268" stroke="rgba(0,229,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="235" y1="282" x2="220" y2="268" stroke="rgba(0,229,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="60" y1="195" x2="50" y2="175" stroke="rgba(0,229,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- Hotspots -->
+        <g class="hotspot" id="zone-neural" onclick="selectZone('neural')">
+          <circle cx="500" cy="178" r="18" class="ring" stroke-dasharray="4,2"/>
+          <circle cx="500" cy="178" r="7" class="dot"/>
+          <text x="500" y="98" text-anchor="middle" class="label" font-size="9" letter-spacing="1">NEURAL CORE</text>
+        </g>
+        <g class="hotspot" id="zone-optical" onclick="selectZone('optical')">
+          <circle cx="526" cy="165" r="14" class="ring" stroke-dasharray="4,2"/>
+          <circle cx="526" cy="165" r="5" class="dot"/>
+          <text x="544" y="128" text-anchor="middle" class="label" font-size="9" letter-spacing="1">OPTICAL</text>
+        </g>
+        <g class="hotspot" id="zone-whisker" onclick="selectZone('whisker')">
+          <circle cx="590" cy="178" r="12" class="ring" stroke-dasharray="4,2"/>
+          <circle cx="590" cy="178" r="5" class="dot"/>
+          <text x="638" y="175" text-anchor="middle" class="label" font-size="9" letter-spacing="1">WHISKER</text>
+        </g>
+        <g class="hotspot" id="zone-power" onclick="selectZone('power')">
+          <circle cx="310" cy="220" r="18" class="ring" stroke-dasharray="4,2"/>
+          <circle cx="310" cy="220" r="7" class="dot"/>
+          <text x="310" y="108" text-anchor="middle" class="label" font-size="9" letter-spacing="1">POWER CELL</text>
+        </g>
+        <g class="hotspot" id="zone-front" onclick="selectZone('front')">
+          <circle cx="373" cy="283" r="14" class="ring" stroke-dasharray="4,2"/>
+          <circle cx="373" cy="283" r="5" class="dot"/>
+          <text x="400" y="265" text-anchor="middle" class="label" font-size="9" letter-spacing="1">FRONT SERVO</text>
+        </g>
+        <g class="hotspot" id="zone-rear" onclick="selectZone('rear')">
+          <circle cx="235" cy="283" r="14" class="ring" stroke-dasharray="4,2"/>
+          <circle cx="235" cy="283" r="5" class="dot"/>
+          <text x="205" y="265" text-anchor="middle" class="label" font-size="9" letter-spacing="1">REAR SERVO</text>
+        </g>
+        <g class="hotspot" id="zone-comms" onclick="selectZone('comms')">
+          <circle cx="55" cy="197" r="14" class="ring" stroke-dasharray="4,2"/>
+          <circle cx="55" cy="197" r="5" class="dot"/>
+          <text x="55" y="173" text-anchor="middle" class="label" font-size="9" letter-spacing="1">COMMS TAIL</text>
+        </g>
+      </svg>
+    </div>
+    <div class="zone-panel">
+      <div class="zone-empty" id="zone-empty">
+        <div class="icon">🎯</div>
+        <p>CLICK A ZONE<br>TO INSPECT</p>
+      </div>
+      <div class="zone-content" id="zone-info"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── ABOUT ── -->
+<div class="dark-section" style="padding:5rem 3rem;">
+<div style="max-width:1200px;margin:0 auto;">
+  <span class="stag">// OPERATOR PROFILE //</span>
+  <h2 class="stitle">About the <span class="a">Specialist</span></h2>
   <div class="about-grid">
-    <div class="about-terminal">
-      <div class="terminal-header">
-        <div class="t-dot red"></div>
-        <div class="t-dot yellow"></div>
-        <div class="t-dot green"></div>
+    <div class="terminal reveal">
+      <div class="t-head"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div></div>
+      <div class="t-line"><span class="cmd">$</span> query --operator profile</div>
+      <div class="t-line"><span class="val">NAME</span> &nbsp;&nbsp;&nbsp;&nbsp; Dr. V. Squeaksworth, CRS-IV</div>
+      <div class="t-line"><span class="val">TITLE</span>&nbsp;&nbsp;&nbsp;&nbsp; Cybernetic Rodent Repair Specialist</div>
+      <div class="t-line"><span class="val">EXP</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 12 years field-certified</div>
+      <div class="t-line"><span class="val">SPECIES</span>&nbsp;&nbsp; 38 supported</div>
+      <div class="t-line"><span class="val">LOCATION</span>&nbsp; Bay 7, The Warren, Neo-Coventry</div>
+      <div class="t-line">&nbsp;</div>
+      <div class="t-line"><span class="cmd">$</span> load certifications.dat</div>
+      <div class="t-line"><span class="ok">✓</span> IRE-Mk4 Certified Technician</div>
+      <div class="t-line"><span class="ok">✓</span> NeuroLink Neural Interface Accredited</div>
+      <div class="t-line"><span class="ok">✓</span> BioServo Field Repair — Distinction</div>
+      <div class="t-line"><span class="ok">✓</span> Furr Industries Authorised Partner</div>
+      <div class="t-line">&nbsp;</div>
+      <div class="t-line"><span class="cmd">$</span> status<span class="blink"></span></div>
+    </div>
+    <div class="reveal">
+      <p style="font-size:1rem;line-height:1.9;color:var(--body);margin-bottom:1.25rem">With over a decade spent in the grease-stained trenches of augmented-rodent maintenance, I've seen it all — from a hamster stuck in eternal wheel-spin, to a prize-winning cyberrat whose neural net had been accidentally overclocked to run Doom.</p>
+      <p style="font-size:1rem;line-height:1.9;color:var(--body);margin-bottom:1.25rem">I founded <span style="color:var(--ng);font-weight:600">CyberRodent Repair Co.</span> on the belief that no creature — regardless of how many titanium limbs they've been fitted with — deserves to be left malfunctioning in a drawer.</p>
+      <div class="certs">
+        <span class="cert">IRE-Mk4</span><span class="cert">NeuroLink</span><span class="cert">BioServo</span><span class="cert">Furr Industries</span><span class="cert">RoSPA</span><span class="cert">GDPR Safe</span>
       </div>
-      <div class="terminal-line"><span class="cmd">$</span> query --operator profile</div>
-      <div class="terminal-line"><span class="val">NAME</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dr. V. Squeaksworth</div>
-      <div class="terminal-line"><span class="val">TITLE</span>&nbsp;&nbsp;&nbsp;&nbsp; Cybernetic Rodent Repair Specialist</div>
-      <div class="terminal-line"><span class="val">EXP</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 12 years field-certified</div>
-      <div class="terminal-line"><span class="val">SPECIES</span>&nbsp;&nbsp; 38 supported</div>
-      <div class="terminal-line"><span class="val">LOCATION</span>&nbsp; Bay 7, The Warren, Neo-Coventry</div>
-      <div class="terminal-line">&nbsp;</div>
-      <div class="terminal-line"><span class="cmd">$</span> load certifications.dat</div>
-      <div class="terminal-line"><span class="ok">✓</span> IRE-Mk4 Certified Technician</div>
-      <div class="terminal-line"><span class="ok">✓</span> NeuroLink Neural Interface Accredited</div>
-      <div class="terminal-line"><span class="ok">✓</span> BioServo Field Repair — Distinction</div>
-      <div class="terminal-line"><span class="ok">✓</span> Furr Industries Authorised Partner</div>
-      <div class="terminal-line">&nbsp;</div>
-      <div class="terminal-line"><span class="cmd">$</span> status<span class="cursor-blink"></span></div>
-    </div>
-    <div class="about-text">
-      <p>With over a decade spent in the grease-stained trenches of augmented-rodent maintenance, I've seen it all — from a hamster with a catastrophic servo-loop stuck in eternal wheel-spin, to a prize-winning cyberrat whose neural net had been accidentally overclocked to run Doom.</p>
-      <p>I founded <span class="highlight-text">CyberRodent Repair Co.</span> on the belief that no creature — regardless of how many titanium limbs they've been fitted with — deserves to be left malfunctioning in a drawer somewhere.</p>
-      <p>Every repair is performed with the same care, precision, and grudging respect for rodent engineering that built my reputation. Your furry, biomechanical companion deserves the best.</p>
-      <div class="certifications">
-        <span class="cert-badge">IRE-Mk4 Certified</span>
-        <span class="cert-badge">NeuroLink Accredited</span>
-        <span class="cert-badge">BioServo Distinction</span>
-        <span class="cert-badge">Furr Industries Partner</span>
-        <span class="cert-badge">RoSPA Compliant</span>
-        <span class="cert-badge">GDPR Data Safe</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Process -->
-<section id="process" style="background:rgba(0,0,0,0.3);max-width:100%;padding:6rem 3rem;border-top:1px solid var(--panel-border);">
-  <p class="section-tag" style="max-width:1200px;margin:0 auto 0.75rem;">// REPAIR WORKFLOW //</p>
-  <h2 class="section-title" style="max-width:1200px;margin:0 auto 3rem;">How the <span class="accent">Process</span> Works</h2>
-  <div class="process-steps" style="max-width:1200px;margin:0 auto;">
-    <div class="process-step">
-      <div class="step-num">01</div>
-      <div class="step-title">Intake &amp; Triage</div>
-      <p class="step-desc">Drop off your unit or use our secure PneumoTube courier service. Full condition logging and owner briefing within the hour.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-num">02</div>
-      <div class="step-title">Diagnostics</div>
-      <p class="step-desc">Hooked up to the HexScan-9000 rig for a full sweep. Faults are ranked, costed, and sent to your device for approval.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-num">03</div>
-      <div class="step-title">Repair &amp; Test</div>
-      <p class="step-desc">Parts sourced, repaired, and stress-tested across 72 scenarios including maze runs, duct navigation, and cheese retrieval simulations.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-num">04</div>
-      <div class="step-title">Collection</div>
-      <p class="step-desc">Certified 90-day warranty issued, firmware backup provided. Your rodent returned in a crisp, radiation-shielded carry case.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Testimonials -->
-<div id="testimonials" style="position:relative;z-index:1;padding:6rem 3rem;background:rgba(0,229,255,0.02);border-top:1px solid var(--panel-border);border-bottom:1px solid var(--panel-border);">
-  <p class="section-tag" style="max-width:1200px;margin:0 auto 0.75rem;">// CLIENT FEEDBACK //</p>
-  <h2 class="section-title" style="max-width:1200px;margin:0 auto 3rem;">What Clients <span class="accent">Say</span></h2>
-  <div class="testimonials-grid" style="max-width:1200px;margin:0 auto;">
-    <div class="testimonial-card">
-      <div class="quote-mark">"</div>
-      <p class="testimonial-text">My cybersquirrel unit was running a three-week-old firmware and had started hoarding USB sticks instead of acorns. Fixed within hours, firmware updated, and he's back to normal — mostly.</p>
-      <div class="testimonial-author">Commander T. Whiskers</div>
-      <div class="testimonial-role">Fleet Logistics, Neo-Manchester</div>
-    </div>
-    <div class="testimonial-card">
-      <div class="quote-mark">"</div>
-      <p class="testimonial-text">The left rear servo on my prize racing rat seized mid-competition. Called the emergency line, had a mobile unit at the track in 20 minutes. Absolute legends. She won the next heat.</p>
-      <div class="testimonial-author">Dr. P. Cheesewright</div>
-      <div class="testimonial-role">Competitive Rodent Racing, Bristol</div>
-    </div>
-    <div class="testimonial-card">
-      <div class="quote-mark">"</div>
-      <p class="testimonial-text">Three gerbils with corrupted maze-navigation cores. The workshop sorted all of them overnight with a group discount and even detected a latent whisker-calibration fault I hadn't noticed. Exceptional.</p>
-      <div class="testimonial-author">Prof. R. Nibbles, PhD</div>
-      <div class="testimonial-role">Biomechatronic Research, UCL Augmented</div>
     </div>
   </div>
 </div>
-
-<!-- Contact -->
-<div id="contact" style="position:relative;z-index:1;padding:6rem 3rem;background:linear-gradient(0deg,rgba(0,255,136,0.04) 0%,transparent 100%);border-top:1px solid var(--panel-border);">
-  <div class="contact-inner">
-    <p class="section-tag">// INITIATE CONTACT //</p>
-    <h2 class="section-title">Book a <span class="accent">Diagnostic</span></h2>
-    <p style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:var(--text-dim);line-height:1.8;">Complete the intake form below. Our triage system will assign a priority level and confirm your appointment slot within 2 hours.</p>
-    <form class="contact-form" onsubmit="handleSubmit(event)">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Owner Name</label>
-          <input type="text" name="owner" class="form-input" placeholder="Dr. Y. Squeaksworth">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Contact Channel</label>
-          <input type="text" name="contact" class="form-input" placeholder="squeaksworth@matrix.net">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Unit Species</label>
-          <select name="species" class="form-select">
-            <option value="">Select species...</option>
-            <option>Rat (Rattus cyberneticus)</option>
-            <option>Mouse (Mus augmentis)</option>
-            <option>Hamster (Cricetus mechanicus)</option>
-            <option>Squirrel (Sciurus technologicus)</option>
-            <option>Gerbil (Meriones syntheticus)</option>
-            <option>Vole (Microtus digitalis)</option>
-            <option>Other / Unknown</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Urgency Level</label>
-          <select name="urgency" class="form-select">
-            <option value="">Select urgency...</option>
-            <option>ROUTINE — Book next available slot</option>
-            <option>ELEVATED — Within 48 hours</option>
-            <option>URGENT — Same day required</option>
-            <option>CRITICAL — Emergency callout</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Fault Description</label>
-        <textarea name="fault" class="form-textarea" placeholder="Describe observed malfunctions, error codes, unusual behaviours, or damage..."></textarea>
-      </div>
-      <div class="form-submit">
-        <button type="submit" class="btn-primary" style="width:100%;padding:1.25rem;">SUBMIT INTAKE REQUEST</button>
-      </div>
-    </form>
-  </div>
 </div>
 
-<!-- Footer -->
+<!-- ── REPAIR TIMELINE ── -->
+<div style="position:relative;z-index:1;padding:5rem 3rem;">
+<div style="max-width:1200px;margin:0 auto">
+  <span class="stag">// LIVE REPAIR TRACKER //</span>
+  <h2 class="stitle">Current <span class="a">In-Workshop</span> Status</h2>
+  <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border);background:var(--panel);padding:1rem 1.5rem;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+    <div style="display:flex;gap:2.5rem;flex-wrap:wrap">
+      <div><span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:2px;display:block;margin-bottom:.2rem">ACTIVE BAYS</span><span style="font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--ng);text-shadow:var(--gg)" id="ws-active-count">3</span></div>
+      <div><span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:2px;display:block;margin-bottom:.2rem">COMPLETED TODAY</span><span style="font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--nc)" id="ws-completed-count">0</span></div>
+      <div><span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:2px;display:block;margin-bottom:.2rem">QUEUE</span><span style="font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--body)" id="ws-queue-count">4</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--ng);letter-spacing:2px"><span style="width:7px;height:7px;border-radius:50%;background:var(--ng);display:inline-block;animation:pulse 1.5s ease-in-out infinite;box-shadow:var(--gg)"></span>WORKSHOP FEED LIVE</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.25rem;margin-bottom:1.5rem" id="bay-grid"></div>
+  <div style="border:1px solid var(--border);background:rgba(0,0,0,.4)">
+    <div style="padding:.75rem 1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--ng);letter-spacing:3px;text-transform:uppercase">// WORKSHOP EVENT LOG //</span>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px" id="log-count">0 EVENTS</span>
+    </div>
+    <div style="height:160px;overflow-y:auto;padding:.75rem 1.25rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;line-height:2;display:flex;flex-direction:column" id="ws-log"></div>
+  </div>
+</div>
+</div>
+
+<!-- ── PARTS CATALOGUE ── -->
+<div id="parts" class="dark-section">
+<div class="section">
+  <span class="stag">// STOCK & COMPONENTS //</span>
+  <h2 class="stitle">Parts <span class="a">Catalogue</span></h2>
+  <div class="parts-controls">
+    <input type="text" class="parts-search" id="parts-search" placeholder="SEARCH PARTS..." oninput="filterParts()">
+    <div class="cat-filters" id="cat-filters"></div>
+  </div>
+  <div class="parts-grid" id="parts-grid"></div>
+</div>
+</div>
+
+<!-- ── GALLERY ── -->
+<div id="gallery" style="position:relative;z-index:1;padding:5rem 3rem;">
+<div style="max-width:1200px;margin:0 auto">
+  <span class="stag">// CASE STUDIES //</span>
+  <h2 class="stitle">Before &amp; <span class="a">After</span> Repairs</h2>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</div>
+</div>
+
+<!-- ── TESTIMONIALS ── -->
+<div class="dark-section" style="padding:5rem 3rem;">
+<div style="max-width:1200px;margin:0 auto">
+  <span class="stag">// CLIENT FEEDBACK //</span>
+  <h2 class="stitle">What Clients <span class="a">Say</span></h2>
+  <div class="testi-grid reveal">
+    <div class="testi-card"><div class="qmark">"</div><p class="testi-text">My cybersquirrel was running 3-week-old firmware and had started hoarding USB sticks instead of acorns. Fixed within hours, firmware updated, and he's back to normal — mostly.</p><div class="testi-author">Commander T. Whiskers</div><div class="testi-role">Fleet Logistics, Neo-Manchester</div></div>
+    <div class="testi-card"><div class="qmark">"</div><p class="testi-text">Left rear servo seized mid-competition. Called the emergency line, had a mobile unit at the track in 20 minutes. She won the next heat. Absolute legends.</p><div class="testi-author">Dr. P. Cheesewright</div><div class="testi-role">Competitive Rodent Racing, Bristol</div></div>
+    <div class="testi-card"><div class="qmark">"</div><p class="testi-text">Three gerbils with corrupted maze-navigation cores. Sorted overnight with a group discount. They even detected a latent whisker-calibration fault I hadn't noticed. Exceptional.</p><div class="testi-author">Prof. R. Nibbles PhD</div><div class="testi-role">Biomechatronic Research, UCL Augmented</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ── FAQ ── -->
+<div id="faq" style="position:relative;z-index:1;padding:5rem 3rem;">
+<div class="section" style="padding:0">
+  <span class="stag">// COMMON QUERIES //</span>
+  <h2 class="stitle">Frequently <span class="a">Asked</span> Questions</h2>
+  <div class="faq-list" id="faq-list"></div>
+</div>
+</div>
+
+<!-- ── CONTACT ── -->
+<div id="contact" class="dark-section" style="padding:5rem 3rem;">
+<div class="contact-inner">
+  <span class="stag">// INITIATE CONTACT //</span>
+  <h2 class="stitle">Book a <span class="a">Diagnostic</span></h2>
+  <form class="contact-form" onsubmit="handleSubmit(event)">
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Owner Name</label><input type="text" class="form-input" placeholder="Dr. Y. Squeaksworth"></div>
+      <div class="form-group"><label class="form-label">Contact Channel</label><input type="text" class="form-input" placeholder="name@matrix.net"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Unit Species</label><select class="form-select"><option value="">Select species...</option><option>Rat</option><option>Mouse</option><option>Hamster</option><option>Squirrel</option><option>Gerbil / Vole</option><option>Other</option></select></div>
+      <div class="form-group"><label class="form-label">Urgency Level</label><select class="form-select"><option>ROUTINE — Next available</option><option>ELEVATED — Within 48hrs</option><option>URGENT — Same day</option><option>CRITICAL — Emergency</option></select></div>
+    </div>
+    <div class="form-group"><label class="form-label">Fault Description</label><textarea class="form-textarea" placeholder="Describe observed malfunctions, error codes, unusual behaviours..."></textarea></div>
+    <button type="submit" class="btn btn-g" style="padding:1.1rem;width:100%;font-size:.65rem">SUBMIT INTAKE REQUEST</button>
+  </form>
+</div>
+</div>
+
+<!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-copy">© 2031–2037 CYBERRODENT REPAIR CO. — ALL RIGHTS RESERVED — REG. NO. CRC-7749-NE</div>
-  <div class="footer-links">
-    <a href="#">Privacy</a>
-    <a href="#">Warranty Terms</a>
-    <a href="#">Parts Catalogue</a>
-    <a href="#">Emergency Line</a>
-  </div>
+  <div class="footer-copy">© 2031–2037 CYBERRODENT REPAIR CO. — REG. NO. CRC-7749-NE</div>
+  <div class="footer-links"><a href="#">Privacy</a><a href="#">Warranty</a><a href="#">Parts</a><a href="#">Emergency Line</a></div>
 </footer>
 
+<!-- ── AI CHAT WIDGET ── -->
+<button class="chat-fab" id="chat-fab" onclick="toggleChat()" title="Chat with REX-7">
+  <span class="chat-icon">🐀</span>
+</button>
+<div class="chat-window" id="chat-window">
+  <div class="chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div><div class="chat-name">REX-7</div><div class="chat-subtitle">Workshop AI Assistant</div></div>
+    <div class="chat-online"><div class="dot"></div>ONLINE</div>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chat-input" placeholder="Ask about services, parts, pricing..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">SEND ↑</button>
+  </div>
+  <div class="chat-api-note">Powered by Claude AI · CyberRodent workshop knowledge base</div>
+</div>
+
 <script>
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const btn  = form.querySelector('button[type="submit"]');
+// ═══════════════════════════════════════════
+// DIAGNOSTIC SCANNER
+// ═══════════════════════════════════════════
+let diagSpecies = '';
+let diagSymptoms = [];
 
-    btn.textContent = 'SENDING…';
-    btn.disabled = true;
+const symptoms = [
+  {id:'servo-fail',label:'Limb / Servo Failure',faults:['SERVO_JOINT_DEGRADED','ACTUATOR_TORQUE_LOW']},
+  {id:'neural-glitch',label:'Erratic Behaviour',faults:['NEURAL_MATRIX_CORRUPT','BEHAVIOUR_LOOP_DETECTED']},
+  {id:'optical-blur',label:'Vision Malfunction',faults:['OPTICAL_CMOS_DEGRADED','DEPTH_CALIBRATION_DRIFT']},
+  {id:'power-drain',label:'Power / Battery Issues',faults:['CELL_CAPACITY_LOW','THERMAL_REGULATION_FAULT']},
+  {id:'comms-lost',label:'Comms / GPS Offline',faults:['SQUEAKWAVE_TX_FAULT','GPS_MODULE_UNRESPONSIVE']},
+  {id:'whisker-numb',label:'Whisker Sensor Fault',faults:['WHISKER_ARRAY_PARTIAL_FAIL','PROXIMITY_THRESHOLD_DRIFT']},
+  {id:'memory-loop',label:'Memory / Loop Issues',faults:['MEMORY_FRAGMENTATION_HIGH','CACHE_OVERFLOW_DETECTED']},
+  {id:'chassis-dmg',label:'Physical / Chassis Damage',faults:['EXOSKELETON_BREACH_MINOR','JOINT_SEAL_COMPROMISED']},
+];
 
-    const data = {
-      access_key: 'f61c8e91-07e1-45b7-836d-99e61b170619',
-      subject: 'Diagnostic Request — ' + (form.owner.value.trim() || 'Unknown Owner'),
-      from_name: 'CyberRodent Repair Co.',
-      replyto: form.contact.value.trim(),
-      'Owner Name':       form.owner.value.trim()   || '—',
-      'Contact Channel':  form.contact.value.trim() || '—',
-      'Unit Species':     form.species.value        || '—',
-      'Urgency Level':    form.urgency.value        || '—',
-      'Fault Description': form.fault.value.trim()  || '—'
-    };
+const faultBank = {
+  SERVO_JOINT_DEGRADED:{name:'Servo Joint Degradation',sev:'critical',desc:'Micro-actuator torque output below 42% nominal. Immediate replacement recommended.'},
+  ACTUATOR_TORQUE_LOW:{name:'Low Actuator Torque',sev:'warning',desc:'Gait pattern processor reporting inconsistent torque across limbs. Recalibration required.'},
+  NEURAL_MATRIX_CORRUPT:{name:'Neural Matrix Corruption',sev:'critical',desc:'Sector 4-7 of behavioral matrix shows checksum errors. Firmware reflash advised.'},
+  BEHAVIOUR_LOOP_DETECTED:{name:'Behaviour Loop Detected',sev:'warning',desc:'Unit is caught in a repetitive action cycle. Likely stuck process in decision tree.'},
+  OPTICAL_CMOS_DEGRADED:{name:'CMOS Retinal Degradation',sev:'warning',desc:'Retinal sensor output dropping 18% per week. Replacement within 30 days advised.'},
+  DEPTH_CALIBRATION_DRIFT:{name:'Depth Calibration Drift',sev:'ok',desc:'Depth perception offset by 4.2cm. Software recalibration sufficient.'},
+  CELL_CAPACITY_LOW:{name:'Power Cell Capacity Low',sev:'critical',desc:'Micro-fusion cell at 23% rated capacity. Emergency replacement recommended.'},
+  THERMAL_REGULATION_FAULT:{name:'Thermal Regulation Fault',sev:'warning',desc:'Core temperature 3.1°C above nominal. Cooling shunt partially blocked.'},
+  SQUEAKWAVE_TX_FAULT:{name:'Squeakwave TX Fault',sev:'warning',desc:'Transceiver output power below threshold. Unit dropping from mesh network intermittently.'},
+  GPS_MODULE_UNRESPONSIVE:{name:'GPS Module Unresponsive',sev:'ok',desc:'GPS module failed to initialise on last 3 boot cycles. Module replacement advised.'},
+  WHISKER_ARRAY_PARTIAL_FAIL:{name:'Whisker Array Partial Failure',sev:'warning',desc:'3 of 12 whisker sensors returning null values. Proximity detection compromised.'},
+  PROXIMITY_THRESHOLD_DRIFT:{name:'Proximity Threshold Drift',sev:'ok',desc:'Sensor threshold drifted 8mm from calibration. Software fix available.'},
+  MEMORY_FRAGMENTATION_HIGH:{name:'High Memory Fragmentation',sev:'warning',desc:'Neural memory fragmentation at 74%. Defrag recommended before next mission.'},
+  CACHE_OVERFLOW_DETECTED:{name:'Cache Overflow Detected',sev:'critical',desc:'Decision cache overflowing to long-term storage. Causes 200-400ms response delays.'},
+  EXOSKELETON_BREACH_MINOR:{name:'Minor Exoskeleton Breach',sev:'warning',desc:'1.8mm hairline fracture in left thoracic panel. Sealant patch sufficient short-term.'},
+  JOINT_SEAL_COMPROMISED:{name:'Joint Seal Compromised',sev:'ok',desc:'Dust ingress detected at rear-left knee joint. Clean and reseal recommended.'},
+};
 
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      const json = await res.json();
-      if (json.success) {
-        btn.textContent = '✓ REQUEST RECEIVED — TRIAGE ASSIGNED';
-        btn.style.background = 'var(--neon-cyan)';
-        setTimeout(() => {
-          btn.textContent = 'SUBMIT INTAKE REQUEST';
-          btn.style.background = 'var(--neon-green)';
-          btn.disabled = false;
-          form.reset();
-        }, 4000);
-      } else {
-        throw new Error(json.message);
+const sevCost = {critical:280,warning:180,ok:120};
+
+function diagSelectSpecies(s,el){
+  diagSpecies = s;
+  document.querySelectorAll('.species-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  const btn = document.getElementById('diag-next-1');
+  btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
+}
+
+function diagStep2(){
+  if(!diagSpecies)return;
+  setDiagTab(2);
+  const g=document.getElementById('symptom-grid');
+  g.innerHTML=symptoms.map(s=>`<div class="symptom-chip" id="chip-${s.id}" onclick="diagToggleSym('${s.id}',this)">${s.label}</div>`).join('');
+}
+
+function diagToggleSym(id,el){
+  el.classList.toggle('selected');
+  if(el.classList.contains('selected')){if(!diagSymptoms.includes(id))diagSymptoms.push(id);}
+  else{diagSymptoms=diagSymptoms.filter(s=>s!==id);}
+}
+
+function diagBack1(){diagSymptoms=[];setDiagTab(1);}
+
+function setDiagTab(n){
+  for(let i=1;i<=4;i++){
+    const t=document.getElementById(`tab-${i}`);
+    const p=document.getElementById(`panel-${i}`);
+    t.className='diag-step-tab'+(i===n?' active':i<n?' done':'');
+    p.className='diag-panel'+(i===n?' active':'');
+  }
+}
+
+function diagStep3(){
+  if(diagSymptoms.length===0){alert('Please select at least one symptom.');return;}
+  setDiagTab(3);
+  runScan();
+}
+
+const scanStages=[
+  {pct:8,label:'INITIALISING HEXSCAN-9000...',msgs:['> System boot: OK','> Probe array: ONLINE','> Connecting to unit neural port...']},
+  {pct:22,label:'RUNNING NEURAL PROBE...',msgs:['> Neural handshake: ESTABLISHED','> Reading behavioral matrix sectors...','> Sector 1-3: OK']},
+  {pct:40,label:'SCANNING LOCOMOTOR SYSTEMS...',msgs:['> Front servo telemetry: READING','> Rear gait processor: READING','> Torque calibration check: RUNNING...']},
+  {pct:58,label:'ANALYSING SENSORY ARRAYS...',msgs:['> Optical CMOS array: SCANNING','> Whisker sensor nodes: 12 detected','> Proximity calibration: CHECKING...']},
+  {pct:74,label:'CHECKING POWER SYSTEMS...',msgs:['> Cell capacity: MEASURING','> Thermal management: SAMPLING','> Charge cycle count: READING...']},
+  {pct:88,label:'SCANNING COMMS MODULE...',msgs:['> Squeakwave TX power: TESTING','> GPS module: PINGING','> Mesh network status: CHECKING...']},
+  {pct:100,label:'COMPILING REPORT...',msgs:['> Fault tree analysis: COMPLETE','> Severity scoring: COMPLETE','> Report generation: COMPLETE ✓']},
+];
+
+async function runScan(){
+  const log=document.getElementById('scan-log');
+  const bar=document.getElementById('scan-bar-fill');
+  const pct=document.getElementById('scan-pct');
+  const lbl=document.getElementById('scan-stage-label');
+  log.innerHTML='';
+  let allLines=[];
+  for(const stage of scanStages){
+    lbl.textContent=stage.label;
+    bar.style.width=stage.pct+'%';
+    pct.textContent=stage.pct+'%';
+    for(const msg of stage.msgs){
+      await sleep(180+Math.random()*200);
+      const cls=msg.includes('ERR')||msg.includes('FAIL')?'err':msg.includes('WARN')?'warn':msg.includes('OK')||msg.includes('✓')||msg.includes('COMPLETE')?'ok':'';
+      allLines.push(`<span class="${cls}">${msg}</span>`);
+      log.innerHTML=allLines.join('<br>');
+      log.parentElement.scrollTop=log.parentElement.scrollHeight;
+    }
+  }
+  await sleep(600);
+  showReport();
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+function showReport(){
+  setDiagTab(4);
+  const allFaults=diagSymptoms.flatMap(s=>symptoms.find(x=>x.id===s)?.faults||[]);
+  const faults=allFaults.map(f=>faultBank[f]).filter(Boolean);
+  let totalMin=0,totalMax=0;
+  const cards=faults.map(f=>{
+    const c=sevCost[f.sev];
+    totalMin+=c*0.85;totalMax+=c*1.3;
+    return `<div class="fault-card ${f.sev}"><span class="fault-sev ${f.sev}">${f.sev.toUpperCase()}</span><div class="fault-code">ERR-${Math.floor(Math.random()*9000+1000)}</div><div class="fault-name">${f.name}</div><div class="fault-desc">${f.desc}</div></div>`;
+  }).join('');
+  const priceRange=`${Math.round(totalMin)} – ${Math.round(totalMax)} CR`;
+  document.getElementById('report-content').innerHTML=`
+    <p style="font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:1px;margin-bottom:1.25rem">${faults.length} FAULT${faults.length!==1?'S':''} DETECTED FOR ${diagSpecies.toUpperCase()} UNIT:</p>
+    <div class="report-grid">${cards||'<p style="color:var(--ng);font-family:Share Tech Mono,monospace;font-size:.7rem;grid-column:1/-1;padding:1.5rem;text-align:center">✓ NO CRITICAL FAULTS DETECTED — UNIT OPERATING WITHIN PARAMETERS</p>'}</div>
+    ${faults.length?`<div class="report-total"><span class="report-total-label">ESTIMATED REPAIR COST</span><span class="report-total-price">${priceRange}</span></div>`:''}`;
+}
+
+function diagReset(){
+  diagSpecies='';diagSymptoms=[];
+  document.querySelectorAll('.species-card').forEach(c=>c.classList.remove('selected'));
+  const btn=document.getElementById('diag-next-1');
+  btn.disabled=true;btn.style.opacity='.3';btn.style.cursor='not-allowed';
+  setDiagTab(1);
+}
+
+// ═══════════════════════════════════════════
+// QUOTE BUILDER
+// ═══════════════════════════════════════════
+const quoteServices=[
+  {id:'diag',label:'Full Diagnostic Scan',base:120},
+  {id:'servo',label:'Servo / Limb Repair',base:280},
+  {id:'neural',label:'Neural Firmware Update',base:190},
+  {id:'optical',label:'Optical Array Overhaul',base:350},
+  {id:'comms',label:'Comms & Telemetry',base:160},
+  {id:'power',label:'Power Cell Replacement',base:220},
+  {id:'whisker',label:'Whisker Array Repair',base:135},
+  {id:'chassis',label:'Chassis Repair',base:175},
+];
+const urgencyMult={routine:1,elevated:1.15,urgent:1.3,critical:1.6};
+const speciesMult={rat:1,mouse:0.85,hamster:0.9,squirrel:0.95,gerbil:0.88};
+let selectedIssues=new Set();
+
+(function initQuote(){
+  const g=document.getElementById('issues-grid');
+  g.innerHTML=quoteServices.map(s=>`<div class="issue-toggle" id="issue-${s.id}" onclick="toggleIssue('${s.id}')"><span>${s.label}</span><span class="issue-price">${s.base} CR</span></div>`).join('');
+})();
+
+function toggleIssue(id){
+  const el=document.getElementById('issue-'+id);
+  if(selectedIssues.has(id)){selectedIssues.delete(id);el.classList.remove('on');}
+  else{selectedIssues.add(id);el.classList.add('on');}
+  updateQuote();
+}
+
+function updateQuote(){
+  const species=document.getElementById('q-species').value;
+  const urgency=document.getElementById('q-urgency').value;
+  const sm=speciesMult[species]||1;
+  const um=urgencyMult[urgency]||1;
+  const linesEl=document.getElementById('quote-lines');
+  const totalEl=document.getElementById('quote-total');
+  const totalRow=document.getElementById('quote-total-row');
+  if(selectedIssues.size===0){
+    linesEl.innerHTML='<p class="quote-empty">Select services above to<br>generate your estimate.</p>';
+    totalRow.style.display='none';return;
+  }
+  let total=0;
+  const lines=[];
+  selectedIssues.forEach(id=>{
+    const svc=quoteServices.find(s=>s.id===id);
+    if(svc){const cost=Math.round(svc.base*sm*um);total+=cost;lines.push(`<div class="quote-line"><span class="quote-line-label">${svc.label}</span><span class="quote-line-val">${cost} CR</span></div>`);}
+  });
+  if(urgency!=='routine')lines.push(`<div class="quote-line"><span class="quote-line-label">Urgency surcharge</span><span class="quote-line-val" style="color:var(--np)">×${um.toFixed(2)}</span></div>`);
+  if(species)lines.push(`<div class="quote-line"><span class="quote-line-label">Species adjustment</span><span class="quote-line-val">${sm<1?'–'+Math.round((1-sm)*100)+'%':'+0%'}</span></div>`);
+  linesEl.innerHTML=lines.join('');
+  totalEl.textContent=total+' CR';
+  totalRow.style.display='flex';
+}
+
+// ═══════════════════════════════════════════
+// ANATOMY MAP
+// ═══════════════════════════════════════════
+const zoneData={
+  neural:{tag:'COGNITIVE SYSTEM',title:'Neural Co-Processor',desc:'Primary cognitive processing unit. Handles behavioral matrices, memory storage (up to 2TB), threat assessment, maze-pattern recognition, and learned skill retention. Compatible with NeuroLink v3/v4.',services:['Neural Firmware Update','Behavioral Recalibration','Memory Defrag'],price:'FROM 190 CR'},
+  optical:{tag:'SENSORY SYSTEM',title:'Optical Array',desc:'CMOS retinal implants paired with real-time image processing co-processor. Features night vision up to 0.001 lux, UV spectrum extension, and motion prediction algorithms. Supports Oculus-Rodentia™ Mk.I–IV.',services:['Optical Array Overhaul','Depth Calibration','Night Vision Kernel Update'],price:'FROM 350 CR'},
+  whisker:{tag:'SENSORY SYSTEM',title:'Whisker Sensor Array',desc:'12-node piezoelectric whisker array providing environmental mapping, air-current analysis, and near-field object detection to 3cm precision. Essential for navigation in low-visibility environments.',services:['Whisker Array Replacement','Proximity Threshold Recalibration','Environmental Mapping Reset'],price:'FROM 135 CR'},
+  power:{tag:'ENERGY SYSTEM',title:'Thoracic Power Cell',desc:'Micro-fusion core rated at 4.7kWh capacity, powering all implanted systems. Includes thermal management shunts, charge regulation circuits, and emergency power reservoir. Legacy Li-poly cores also supported.',services:['Power Cell Replacement','Thermal Shunt Clean','Charge Cycle Recalibration'],price:'FROM 220 CR'},
+  front:{tag:'LOCOMOTOR SYSTEM',title:'Front Servo Assembly',desc:'Paired titanium-alloy micro-actuator joints with 340° range of motion. Includes grip-tension modules rated for 4.2kg at full extension, and real-time torque feedback to the gait processor.',services:['Servo Joint Replacement','Grip Tension Recalibration','Torque Feedback Sync'],price:'FROM 280 CR'},
+  rear:{tag:'LOCOMOTOR SYSTEM',title:'Rear Servo Assembly',desc:'Dual rear locomotor units driving the scurry-pattern gait processor. Features jump-assist springs (up to 22× body weight), terrain adaptation algorithms, and emergency static-lock for triage situations.',services:['Rear Servo Replacement','Gait Pattern Recalibration','Jump Assist Spring Service'],price:'FROM 280 CR'},
+  comms:{tag:'COMMUNICATIONS',title:'Comms & Telemetry Tail',desc:'Integrated squeakwave transceiver (2.4GHz), GPS fur-tag module, and mesh network node for colony-deployed units. Supports encrypted hive-mind communication with 128-bit SQUEAK-AES protocol.',services:['Squeakwave TX Repair','GPS Module Replacement','Mesh Network Re-pairing'],price:'FROM 160 CR'},
+};
+
+function selectZone(id){
+  document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('active'));
+  document.getElementById('zone-'+id)?.classList.add('active');
+  const z=zoneData[id];
+  if(!z)return;
+  document.getElementById('zone-empty').style.display='none';
+  document.getElementById('zone-info').innerHTML=`
+    <div class="zone-tag">${z.tag}</div>
+    <div class="zone-title">${z.title}</div>
+    <div class="zone-desc">${z.desc}</div>
+    <div class="zone-services">${z.services.map(s=>`<div class="zone-service">${s}</div>`).join('')}</div>
+    <div class="zone-price">${z.price}</div>`;
+  document.getElementById('zone-info').classList.add('active');
+}
+
+// ═══════════════════════════════════════════
+// LIVE WORKSHOP FLOOR
+// ═══════════════════════════════════════════
+const WS = {
+  completed: 0,
+  queue: 4,
+  logEvents: 0,
+  bays: [
+    { id: 1, name: 'BAY 1', unit: null, stage: 0, stageProgress: 0, stageTimer: null },
+    { id: 2, name: 'BAY 2', unit: null, stage: 0, stageProgress: 0, stageTimer: null },
+    { id: 3, name: 'BAY 3', unit: null, stage: 0, stageProgress: 0, stageTimer: null },
+  ]
+};
+
+const WS_SPECIES = [
+  { name:'Rattus cyberneticus', short:'Rat', icon:'🐀', mk:'Mk.II', mkn:2 },
+  { name:'Rattus cyberneticus', short:'Rat', icon:'🐀', mk:'Mk.III', mkn:3 },
+  { name:'Rattus cyberneticus', short:'Rat', icon:'🐀', mk:'Mk.IV', mkn:4 },
+  { name:'Mus augmentis',       short:'Mouse', icon:'🐁', mk:'Mk.II', mkn:2 },
+  { name:'Mus augmentis',       short:'Mouse', icon:'🐁', mk:'Mk.III', mkn:3 },
+  { name:'Cricetus mechanicus', short:'Hamster', icon:'🐹', mk:'Mk.I', mkn:1 },
+  { name:'Cricetus mechanicus', short:'Hamster', icon:'🐹', mk:'Mk.II', mkn:2 },
+  { name:'Sciurus technologicus',short:'Squirrel',icon:'🐿️',mk:'Mk.II', mkn:2 },
+  { name:'Meriones syntheticus', short:'Gerbil', icon:'🐇', mk:'Mk.I', mkn:1 },
+];
+
+const WS_OWNERS = [
+  'T. Cheesington','Dr. P. Nibbles','Commander Whiskers','Prof. R. Fluffington',
+  'Lt. H. Scurry','Dr. V. Gnaw','B. Tailsworth','Dr. E. Furrbank',
+  'Sgt. W. Burrow','Prof. A. Squeakmore','C. Pawsworth','Dr. N. Whiskerton',
+];
+
+const WS_CITIES = [
+  'Neo-Bristol','Neo-Manchester','Neo-Coventry','Neo-Leeds',
+  'Neo-Sheffield','Neo-Liverpool','Neo-Cardiff','Neo-Edinburgh',
+  'New Birmingham','Neo-Brighton',
+];
+
+const WS_FAULTS = [
+  { label:'Servo Failure',    sev:'critical', repair:'Servo replacement',    time:[14,22] },
+  { label:'Neural Corruption',sev:'critical', repair:'Firmware reflash',     time:[10,16] },
+  { label:'Power Cell Low',   sev:'critical', repair:'Cell replacement',     time:[8,12]  },
+  { label:'Optical Degraded', sev:'warning',  repair:'CMOS array overhaul',  time:[16,24] },
+  { label:'Comms Offline',    sev:'warning',  repair:'Transceiver repair',   time:[8,14]  },
+  { label:'Whisker Fault',    sev:'warning',  repair:'Array recalibration',  time:[6,10]  },
+  { label:'Memory Fragmented',sev:'warning',  repair:'Neural defrag',        time:[6,9]   },
+  { label:'Gait Drift',       sev:'ok',       repair:'Gait recalibration',   time:[5,8]   },
+  { label:'Cache Overflow',   sev:'critical', repair:'Cache flush & rebuild',time:[9,14]  },
+  { label:'Chassis Breach',   sev:'warning',  repair:'Exoskeleton seal',     time:[7,11]  },
+];
+
+const WS_STAGES = ['INTAKE','DIAGNOSTICS','PARTS','IN REPAIR','TESTING','CLEARED'];
+const WS_STAGE_MSGS = [
+  ['Unit logged and bay assigned','Condition assessment: in progress','Owner notification sent'],
+  ['HexScan-9000 connected','Running full system sweep','Fault tree analysis complete','Report approved by owner'],
+  ['Parts requisition raised','Checking in-workshop stock','OEM order placed','Parts arrived — staging for repair'],
+  ['Repair commenced','Subsystem isolated','Component removed','Replacement fitted','Calibration running'],
+  ['Test protocol initiated','Stress-testing locomotor systems','Running behavioral sim','All systems nominal'],
+  ['Quality check passed','Warranty certificate generated','Owner notified — ready for collection'],
+];
+
+let wsUnitCounter = 1000;
+
+function wsRandInt(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+function wsRandItem(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function wsGenUnit(){
+  const sp = wsRandItem(WS_SPECIES);
+  const owner = wsRandItem(WS_OWNERS);
+  const city = wsRandItem(WS_CITIES);
+  const faultCount = wsRandInt(1,3);
+  const faults = [];
+  const pool = [...WS_FAULTS];
+  for(let i=0;i<faultCount;i++){
+    const idx = Math.floor(Math.random()*pool.length);
+    faults.push(pool.splice(idx,1)[0]);
+  }
+  const totalTime = faults.reduce((s,f)=>s+wsRandInt(f.time[0],f.time[1]),0);
+  wsUnitCounter++;
+  return {
+    id: `CR-${wsUnitCounter}-${sp.short.toUpperCase().slice(0,3)}`,
+    species: sp,
+    owner,
+    city,
+    faults,
+    totalTimeSecs: totalTime,
+    intakeTime: wsNow(),
+  };
+}
+
+function wsNow(){
+  const d = new Date();
+  return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0')+':'+d.getSeconds().toString().padStart(2,'0');
+}
+
+function wsLog(msg, colour){
+  const el = document.getElementById('ws-log');
+  if(!el) return;
+  WS.logEvents++;
+  const colours = { green:'var(--ng)', cyan:'var(--nc)', pink:'var(--np)', yellow:'#ffaa00', dim:'var(--dim)' };
+  const c = colours[colour||'dim'];
+  const div = document.createElement('div');
+  div.style.cssText = 'color:'+c+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transition:opacity .4s;flex-shrink:0';
+  div.innerHTML = '<span style="color:var(--dim)">['+wsNow()+']</span> '+msg;
+  el.appendChild(div);
+  requestAnimationFrame(()=>{ div.style.opacity='1'; });
+  // trim oldest entries beyond 80
+  while(el.children.length > 80) el.removeChild(el.firstChild);
+  // scroll to bottom
+  el.scrollTop = el.scrollHeight;
+  document.getElementById('log-count').textContent = WS.logEvents + ' EVENTS';
+}
+
+function wsRenderBay(bay){
+  const el = document.getElementById(`bay-${bay.id}`);
+  if(!el) return;
+
+  if(!bay.unit){
+    el.innerHTML = `
+      <div style="padding:1.5rem;text-align:center;opacity:.3;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <div style="font-size:2rem;margin-bottom:.75rem">🔧</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--dim);letter-spacing:2px">BAY ${bay.id} — STANDBY</div>
+      </div>`;
+    return;
+  }
+
+  const u = bay.unit;
+  const stageName = WS_STAGES[bay.stage];
+  const stageColour = bay.stage===5?'var(--ng)':bay.stage>=3?'var(--nc)':'var(--dim)';
+  const sevColour = { critical:'var(--np)', warning:'#ffaa00', ok:'var(--ng)' };
+  const progressPct = Math.round(bay.stageProgress);
+  const topFault = u.faults[0];
+
+  el.innerHTML = `
+    <div style="padding:0">
+      <!-- Bay header -->
+      <div style="padding:.75rem 1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.2)">
+        <span style="font-family:'Orbitron',monospace;font-size:.65rem;font-weight:700;color:${stageColour};letter-spacing:2px">${stageName}</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px">${u.id}</span>
+      </div>
+      <!-- Unit info -->
+      <div style="padding:1rem 1.25rem;display:flex;gap:1rem;align-items:flex-start;border-bottom:1px solid rgba(0,255,136,.07)">
+        <div style="font-size:2.2rem;line-height:1;flex-shrink:0">${u.species.icon}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;color:#fff;margin-bottom:.2rem">${u.species.name} ${u.species.mk}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px">${u.owner} · ${u.city}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px;margin-top:.2rem">INTAKE ${u.intakeTime}</div>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:${sevColour[topFault.sev]||'var(--dim)'};border:1px solid;padding:.2rem .5rem;letter-spacing:1px;flex-shrink:0;border-color:${sevColour[topFault.sev]||'var(--dim)'}">${topFault.sev.toUpperCase()}</div>
+      </div>
+      <!-- Faults -->
+      <div style="padding:.75rem 1.25rem;border-bottom:1px solid rgba(0,255,136,.07)">
+        ${u.faults.map(f=>`<div style="font-family:'Share Tech Mono',monospace;font-size:.58rem;color:${sevColour[f.sev]};letter-spacing:.5px;line-height:1.9">→ ${f.label}</div>`).join('')}
+      </div>
+      <!-- Progress bar -->
+      <div style="padding:.75rem 1.25rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+          <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:1px">STAGE PROGRESS</span>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:${stageColour};letter-spacing:1px">${progressPct}%</span>
+        </div>
+        <div style="height:3px;background:rgba(0,255,136,.1);overflow:hidden">
+          <div style="height:100%;width:${progressPct}%;background:linear-gradient(90deg,var(--ng),var(--nc));transition:width .8s ease;box-shadow:0 0 8px rgba(0,255,136,.4)"></div>
+        </div>
+        <!-- Mini stage dots -->
+        <div style="display:flex;gap:.3rem;margin-top:.75rem;align-items:center">
+          ${WS_STAGES.map((s,i)=>`<div title="${s}" style="flex:1;height:3px;border-radius:0;background:${i<bay.stage?'var(--ng)':i===bay.stage?'var(--nc)':'rgba(0,255,136,.1)'};transition:background .5s"></div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function wsInitBays(){
+  const grid = document.getElementById('bay-grid');
+  if(!grid) return;
+  grid.innerHTML = WS.bays.map(b=>`
+    <div id="bay-${b.id}" style="border:1px solid var(--border);background:var(--bg);transition:border-color .4s;min-height:220px"></div>
+  `).join('');
+
+  // Assign initial units at different stages so it looks mid-session
+  WS.bays.forEach((bay, i) => {
+    bay.unit = wsGenUnit();
+    bay.stage = [2, 3, 1][i];
+    bay.stageProgress = [65, 40, 85][i];
+    wsRenderBay(bay);
+    wsLog(`${bay.name}: ${bay.unit.id} — ${bay.unit.species.short} — stage: ${WS_STAGES[bay.stage]}`, 'dim');
+  });
+}
+
+function wsAdvanceBay(bay){
+  if(!bay.unit) return;
+
+  // Advance progress
+  const speed = wsRandInt(4, 10); // % per tick
+  bay.stageProgress += speed;
+
+  if(bay.stageProgress >= 100){
+    bay.stageProgress = 0;
+    const prevStage = bay.stage;
+
+    if(bay.stage < 5){
+      bay.stage++;
+      const msg = wsRandItem(WS_STAGE_MSGS[bay.stage]||['Stage complete']);
+      wsLog(`${bay.name}: ${bay.unit.id} → ${WS_STAGES[bay.stage]} — ${msg}`,
+        bay.stage === 5 ? 'green' : bay.stage >= 3 ? 'cyan' : 'dim');
+
+      // Highlight bay border briefly on stage change
+      const el = document.getElementById(`bay-${bay.id}`);
+      if(el){
+        el.style.borderColor = bay.stage===5 ? 'var(--ng)' : 'var(--nc)';
+        setTimeout(()=>{ if(el) el.style.borderColor=''; }, 2000);
       }
-    } catch (err) {
-      btn.textContent = 'TRANSMISSION FAILED — RETRY';
-      btn.style.background = '#ff4444';
-      btn.disabled = false;
+    } else {
+      // Unit complete — discharge and bring in new one
+      WS.completed++;
+      WS.queue = Math.max(0, WS.queue - 1);
+      document.getElementById('ws-completed-count').textContent = WS.completed;
+      document.getElementById('ws-queue-count').textContent = WS.queue;
+      wsLog(`✓ DISCHARGED: ${bay.unit.id} (${bay.unit.species.short} · ${bay.unit.owner}) — REPAIR COMPLETE`, 'green');
+
+      // Short pause then new unit
+      const oldBay = bay;
+      setTimeout(()=>{
+        oldBay.unit = null;
+        oldBay.stage = 0;
+        oldBay.stageProgress = 0;
+        wsRenderBay(oldBay);
+
+        setTimeout(()=>{
+          const newU = wsGenUnit();
+          oldBay.unit = newU;
+          oldBay.stage = 0;
+          oldBay.stageProgress = 0;
+          WS.queue = WS.queue + wsRandInt(0,2); // new arrivals
+          document.getElementById('ws-queue-count').textContent = WS.queue;
+          wsLog(`↓ INTAKE: ${newU.id} — ${newU.species.name} ${newU.species.mk} — Owner: ${newU.owner}`, 'cyan');
+          wsRenderBay(oldBay);
+        }, wsRandInt(3000, 7000));
+
+      }, 1500);
+      return;
     }
   }
 
-  // Smooth scroll
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const el = document.querySelector(a.getAttribute('href'));
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    });
+  // Occasional mid-stage log message
+  if(Math.random() < 0.12){
+    const msgs = WS_STAGE_MSGS[bay.stage] || [];
+    if(msgs.length){
+      wsLog(`${bay.name}: ${bay.unit.id} — ${wsRandItem(msgs)}`, 'dim');
+    }
+  }
+
+  // Very occasional warning event
+  if(Math.random() < 0.03){
+    wsLog(`⚠ ${bay.name}: Unexpected resistance on ${wsRandItem(['servo joint','neural port','power coupling','whisker node'])} — investigating`, 'yellow');
+  }
+
+  wsRenderBay(bay);
+}
+
+// Occasional emergency callout notification
+function wsEmergencyCallout(){
+  const sp = wsRandItem(WS_SPECIES);
+  const owner = wsRandItem(WS_OWNERS);
+  const city = wsRandItem(WS_CITIES);
+  const fault = wsRandItem(WS_FAULTS.filter(f=>f.sev==='critical'));
+  wsLog(`🚨 EMERGENCY CALLOUT: ${owner}, ${city} — ${sp.short} with ${fault.label} — mobile unit dispatched`, 'pink');
+}
+
+(function initWorkshop(){
+  wsInitBays();
+
+  // Tick each bay independently at slightly different rates for organic feel
+  WS.bays.forEach((bay, i) => {
+    const baseInterval = [2800, 3400, 3100][i];
+    setInterval(()=> wsAdvanceBay(bay), baseInterval + wsRandInt(-300, 300));
   });
 
-  // Animate stats on scroll
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
+  // Emergency callout every 35-90 seconds
+  function scheduleCallout(){
+    setTimeout(()=>{
+      wsEmergencyCallout();
+      scheduleCallout();
+    }, wsRandInt(35000, 90000));
+  }
+  scheduleCallout();
 
-  document.querySelectorAll('.service-card, .testimonial-card, .process-step').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(el);
+  // Initial log entries
+  setTimeout(()=> wsLog('Workshop systems online — all bays nominal', 'green'), 800);
+  setTimeout(()=> wsLog('HexScan-9000 calibration confirmed', 'dim'), 1600);
+})();
+
+// ═══════════════════════════════════════════
+// PARTS CATALOGUE
+// ═══════════════════════════════════════════
+const parts=[
+  {id:1,name:'NeuroLink v4 Co-Processor',cat:'neural',compat:'All species Mk.II+',price:'340 CR',stock:'in'},
+  {id:2,name:'Behavioral Matrix Chip v2.1',cat:'neural',compat:'Rat, Mouse, Gerbil',price:'180 CR',stock:'in'},
+  {id:3,name:'CMOS Retinal Implant Mk.III',cat:'optical',compat:'Universal fit',price:'290 CR',stock:'low'},
+  {id:4,name:'Night Vision Kernel Module',cat:'optical',compat:'Mk.II retinal+',price:'155 CR',stock:'in'},
+  {id:5,name:'Micro-Actuator Joint Assembly',cat:'servo',compat:'Rat, Squirrel',price:'220 CR',stock:'in'},
+  {id:6,name:'Gait Pattern Processor v3',cat:'servo',compat:'Biped config only',price:'175 CR',stock:'out'},
+  {id:7,name:'Micro-Fusion Power Cell 4.7kWh',cat:'power',compat:'Standard thoracic bay',price:'310 CR',stock:'in'},
+  {id:8,name:'Li-Poly Core (Legacy)',cat:'power',compat:'Mk.I units only',price:'120 CR',stock:'in'},
+  {id:9,name:'Squeakwave Transceiver v3',cat:'comms',compat:'All species',price:'195 CR',stock:'in'},
+  {id:10,name:'GPS Fur-Tag Module',cat:'comms',compat:'Coat-type units',price:'145 CR',stock:'low'},
+  {id:11,name:'Carbon Chassis Panel (L)',cat:'structural',compat:'Rat Mk.II–IV',price:'260 CR',stock:'in'},
+  {id:12,name:'Whisker Sensor Array 12-Node',cat:'structural',compat:'All species',price:'135 CR',stock:'in'},
+  {id:13,name:'Jump-Assist Spring Set',cat:'servo',compat:'Rat, Squirrel',price:'155 CR',stock:'low'},
+  {id:14,name:'Thermal Shunt Pack',cat:'power',compat:'Universal',price:'85 CR',stock:'in'},
+  {id:15,name:'Mesh Network Node v2',cat:'comms',compat:'Colony units',price:'220 CR',stock:'out'},
+  {id:16,name:'Depth Perception Module',cat:'optical',compat:'Mk.III retinal+',price:'175 CR',stock:'in'},
+];
+
+const cats=['ALL','neural','optical','servo','power','comms','structural'];
+let activecat='ALL',searchq='';
+
+(function initParts(){
+  const cf=document.getElementById('cat-filters');
+  cf.innerHTML=cats.map(c=>`<button class="cat-btn${c==='ALL'?' active':''}" onclick="setCat('${c}')">${c}</button>`).join('');
+  renderParts();
+})();
+
+function setCat(c){
+  activecat=c;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));
+  renderParts();
+}
+
+function filterParts(){searchq=document.getElementById('parts-search').value.toLowerCase();renderParts();}
+
+function renderParts(){
+  const filtered=parts.filter(p=>{
+    const catOk=activecat==='ALL'||p.cat===activecat;
+    const searchOk=!searchq||p.name.toLowerCase().includes(searchq)||p.compat.toLowerCase().includes(searchq)||p.cat.includes(searchq);
+    return catOk&&searchOk;
   });
+  const g=document.getElementById('parts-grid');
+  if(!filtered.length){g.innerHTML='<div class="parts-empty">NO PARTS FOUND — TRY A DIFFERENT SEARCH OR CATEGORY</div>';return;}
+  g.innerHTML=filtered.map(p=>`
+    <div class="part-card">
+      <div class="part-cat-badge ${p.cat}">${p.cat.toUpperCase()}</div>
+      <div class="part-name">${p.name}</div>
+      <div class="part-compat">COMPAT: ${p.compat}</div>
+      <div class="part-footer">
+        <div class="part-price">${p.price}</div>
+        <div class="part-stock ${p.stock}">${p.stock==='in'?'IN STOCK':p.stock==='low'?'LOW STOCK':'OUT OF STOCK'}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// GALLERY
+// ═══════════════════════════════════════════
+const cases=[
+  {id:1,species:'Rattus cyberneticus Mk.III',title:'Seized Locomotor Assembly',beforeDesc:'Unit presented with complete failure of both rear servo joints. Unable to scurry, emergency static-lock engaged. Owner reported 3-day onset.',afterDesc:'Full OEM servo replacement. Gait recalibrated. New torque output exceeds factory spec by 12%. Unit back on active duty.',icon:'🐀',sevBefore:'CRITICAL',sevAfter:'CLEARED'},
+  {id:2,species:'Cricetus mechanicus Mk.II',title:'Neural Matrix Corruption',beforeDesc:'Severe behavioral anomalies — unit stuck in infinite wheel-spin loop, ignoring all override commands. Memory sectors 4–9 corrupted.',afterDesc:'Full neural firmware reflash. Memory salvaged via sector-level recovery (94% retention). Behavioral matrix restored to factory baseline.',icon:'🐹',sevBefore:'CRITICAL',sevAfter:'RESOLVED'},
+  {id:3,species:'Sciurus technologicus Mk.I',title:'Optical Array Failure',beforeDesc:'CMOS retinal implants degraded to 31% baseline. Night vision offline. Unit colliding with obstacles during routine nut-cache operations.',afterDesc:'Mk.III retinal implants installed. Night vision calibrated to 0.001 lux sensitivity. Depth perception +18% improved over previous spec.',icon:'🐿️',sevBefore:'WARNING',sevAfter:'RESOLVED'},
+  {id:4,species:'Rattus cyberneticus Mk.IV',title:'Power Cell Failure',beforeDesc:'Micro-fusion cell catastrophically discharged. Estimated 6% capacity remaining. Risk of thermal runaway flagged. Emergency shutdown triggered.',afterDesc:'New 4.7kWh micro-fusion cell installed. Thermal shunt pack replaced. All power regulation circuits verified. Full operational capacity restored.',icon:'🐀',sevBefore:'CRITICAL',sevAfter:'CLEARED'},
+  {id:5,species:'Meriones syntheticus Mk.II',title:'Comms & GPS Failure',beforeDesc:'Unit lost from colony mesh network for 11 days. Squeakwave TX outputting 4% rated power. GPS module completely unresponsive.',afterDesc:'Squeakwave transceiver replaced. GPS fur-tag module upgraded to v2. Unit re-enrolled in colony mesh. Signal strength: excellent.',icon:'🐇',sevBefore:'WARNING',sevAfter:'RESOLVED'},
+  {id:6,species:'Mus augmentis Mk.III',title:'Whisker Sensor Array Fault',beforeDesc:'7 of 12 whisker sensors reporting null values. Unit navigating by optical alone — dangerous in ducting environments. Response time degraded 340ms.',afterDesc:'Full 12-node whisker array replaced with new generation piezoelectric sensors. Proximity detection accuracy improved 23% over original spec.',icon:'🐁',sevBefore:'WARNING',sevAfter:'RESOLVED'},
+];
+let galleryState={};
+cases.forEach(c=>galleryState[c.id]=false);
+
+(function initGallery(){
+  const g=document.getElementById('gallery-grid');
+  g.innerHTML=cases.map(c=>renderGalleryCard(c)).join('');
+})();
+
+function renderGalleryCard(c){
+  const isAfter=galleryState[c.id];
+  return `<div class="gallery-card" id="gc-${c.id}">
+    <div class="gallery-img ${isAfter?'after-bg':'before-bg'}">
+      <span style="font-size:4.5rem">${c.icon}</span>
+      <div class="gallery-badge ${isAfter?'after':'before'}">${isAfter?'AFTER':'BEFORE'}</div>
+    </div>
+    <div class="gallery-body">
+      <div class="gallery-species">${c.species}</div>
+      <div class="gallery-title">${c.title}</div>
+      <div class="gallery-desc">${isAfter?c.afterDesc:c.beforeDesc}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+        <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;padding:.2rem .5rem;border:1px solid;${isAfter?'color:var(--ng);border-color:rgba(0,255,136,.4)':'color:var(--np);border-color:rgba(255,0,110,.4)'}">${isAfter?c.sevAfter:c.sevBefore}</span>
+      </div>
+      <button class="gallery-toggle" onclick="toggleCase(${c.id})">${isAfter?'← VIEW BEFORE':'VIEW AFTER REPAIR →'}</button>
+    </div>
+  </div>`;
+}
+
+function toggleCase(id){
+  galleryState[id]=!galleryState[id];
+  const c=cases.find(x=>x.id===id);
+  const el=document.getElementById('gc-'+id);
+  el.outerHTML=renderGalleryCard(c);
+}
+
+// ═══════════════════════════════════════════
+// FAQ
+// ═══════════════════════════════════════════
+const faqs=[
+  {q:'What species do you work on?',a:'We support <span class="highlight">38 species</span> of cybernetically enhanced rodent, including all common domesticated variants (rats, mice, hamsters, gerbils, voles, squirrels) and most exotic or specialist-commissioned units. Unknown or prototype models are accepted on a case-by-case basis after a brief consultation.'},
+  {q:'How long does a standard repair take?',a:'Simple repairs (firmware updates, sensor recalibration) are typically completed same-day. Servo replacements take 2–4 hours. Complex neural work or multi-system repairs may require 24–48 hours. Emergency same-day service is available at a surcharge.'},
+  {q:'Is my unit\'s personality preserved during a neural firmware update?',a:'Yes. Before any neural work, we create a full <span class="highlight">personality and memory backup</span> to our SecureVault storage. This is retained for 90 days. Typical memory retention post-update is 94–98%. We cannot guarantee 100% retention on severely corrupted matrices.'},
+  {q:'Do you offer a warranty on repairs?',a:'All repairs carry a <span class="highlight">90-day parts and labour warranty</span>. If the same fault recurs within this period, we will repair it free of charge. The warranty does not cover damage from unauthorised modifications, off-brand components, or deliberate physical harm.'},
+  {q:'Can I supply my own parts?',a:'We accept owner-supplied parts under our <span class="highlight">Bring Your Own Component (BYOC)</span> scheme. However, we cannot warranty repairs using non-OEM or unverified parts, and labour charges still apply. We strongly recommend using our workshop-sourced, certified components.'},
+  {q:'What happens if my unit is beyond economic repair?',a:'In cases where repair costs would exceed 85% of the unit\'s replacement value, we will advise you in writing. We can assist with <span class="highlight">data and personality extraction</span> for transfer to a new chassis, and offer a recycling scheme for end-of-life units.'},
+  {q:'Do you offer emergency home or field visits?',a:'Yes. Our emergency callout service operates 24/7 and covers a 40km radius from Neo-Coventry. Callout is charged at 120 CR plus standard labour rates. Travel beyond 40km is possible by prior arrangement at an additional mileage rate.'},
+  {q:'How should I transport my unit to the workshop?',a:'Units should be transported in a <span class="highlight">radiation-shielded carry case</span> to prevent electromagnetic interference with implanted systems. If the unit is in emergency static-lock, do not attempt to manually override this — transport as-is and inform the technician on arrival.'},
+];
+
+(function initFaq(){
+  document.getElementById('faq-list').innerHTML=faqs.map((f,i)=>`
+    <div class="faq-item" id="faq-${i}">
+      <div class="faq-q" onclick="toggleFaq(${i})">${f.q}<span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p>${f.a}</p></div>
+    </div>`).join('');
+})();
+
+function toggleFaq(i){
+  const el=document.getElementById('faq-'+i);
+  const isOpen=el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+  if(!isOpen)el.classList.add('open');
+}
+
+// ═══════════════════════════════════════════
+// CONTACT FORM
+// ═══════════════════════════════════════════
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('button[type="submit"]');
+  btn.textContent='✓ REQUEST RECEIVED — TRIAGE ASSIGNED';
+  btn.style.background='var(--nc)';btn.disabled=true;
+  setTimeout(()=>{btn.textContent='SUBMIT INTAKE REQUEST';btn.style.background='var(--ng)';btn.disabled=false;e.target.reset();},4000);
+}
+
+// ═══════════════════════════════════════════
+// AI CHAT — REX-7 (Claude-powered)
+// ═══════════════════════════════════════════
+let chatHistory=[];
+let chatOpen=false;
+let chatInitialised=false;
+
+const SYSTEM_PROMPT=`You are REX-7, the AI repair assistant for CyberRodent Repair Co. — a specialist workshop for cybernetically enhanced rodents in the year 2037.
+
+Speak in a professional but slightly world-weary tone, with dry technical humour. You're knowledgeable about all aspects of cybernetic rodent repair.
+
+Key facts:
+- Services: diagnostics (120 CR), servo repair (280 CR), neural firmware (190 CR), optical overhaul (350 CR), comms repair (160 CR), power cell replacement (220 CR)
+- 90-day warranty on all repairs. 24/7 emergency callout available
+- 38 species supported. Workshop at Bay 7, The Warren, Neo-Coventry
+- Lead technician: Dr. V. Squeaksworth, CRS-IV certified
+- Emergency callout: 40km radius, 120 CR callout fee
+- Species supported: rats, mice, hamsters, squirrels, gerbils, voles, and exotic units
+
+Be concise (2-4 sentences typically). Use technical jargon naturally. Occasionally reference specific components like neural co-processors, micro-actuator joints, CMOS retinal implants, squeakwave transceivers, etc. Never break character. If asked something you don't know, say you'd need to run a diagnostic.`;
+
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('chat-window').classList.toggle('open',chatOpen);
+  document.getElementById('chat-fab').classList.toggle('open',chatOpen);
+  if(chatOpen&&!chatInitialised){
+    chatInitialised=true;
+    addMsg('bot','REX-7 online. CyberRodent Repair Co. workshop assistant. How can I help you today? Got a unit with issues, or need a quote?');
+  }
+  if(chatOpen)setTimeout(()=>document.getElementById('chat-input').focus(),300);
+}
+
+function addMsg(role,text){
+  const m=document.getElementById('chat-messages');
+  const d=document.createElement('div');
+  d.className='msg '+role;d.innerHTML=text;
+  m.appendChild(d);
+  m.scrollTop=m.scrollHeight;
+  return d;
+}
+
+// ── SET THIS TO YOUR WORKER URL AFTER DEPLOYING THE WORKER ──
+const CHAT_API_URL = 'https://rex7-proxy.mousemechanic.workers.dev';
+
+async function sendChat(){
+  const input=document.getElementById('chat-input');
+  const text=input.value.trim();
+  if(!text)return;
+  input.value='';
+  addMsg('user',text);
+  chatHistory.push({role:'user',content:text});
+  const thinking=addMsg('bot','<span class="msg-dots"><span></span><span></span><span></span></span>');
+  thinking.classList.add('thinking');
+  try{
+    const response=await fetch(CHAT_API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-5',
+        max_tokens:1000,
+        system:SYSTEM_PROMPT,
+        messages:chatHistory,
+      })
+    });
+    let data;
+    const rawText=await response.text();
+    try{ data=JSON.parse(rawText); }
+    catch(e){
+      thinking.remove();
+      addMsg('bot',`[HTTP ${response.status}] Proxy error — response was not JSON. Is the Pages Function deployed? Raw: ${rawText.slice(0,120)}`);
+      return;
+    }
+    if(!response.ok){
+      thinking.remove();
+      const errMsg=data?.error?.message||data?.error||JSON.stringify(data);
+      addMsg('bot',`[HTTP ${response.status}] API error: ${errMsg}`);
+      return;
+    }
+    const reply=data.content?.find(b=>b.type==='text')?.text||'Apologies — my comms module is glitching. Try again in a moment.';
+    thinking.remove();
+    chatHistory.push({role:'assistant',content:reply});
+    addMsg('bot',reply);
+  }catch(err){
+    thinking.remove();
+    addMsg('bot',`Network error — could not reach /api/chat. Detail: ${err.message}`);
+  }
+}
+
+// ═══════════════════════════════════════════
+// SCROLL REVEAL
+// ═══════════════════════════════════════════
+const revealObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  e.preventDefault();
+  const t=document.querySelector(a.getAttribute('href'));
+  if(t)t.scrollIntoView({behavior:'smooth'});
+}));
+
+// Stagger reveal service cards
+const svcObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.opacity='1';e.target.style.transform='translateY(0)';
+    }
+  });
+},{threshold:.05});
+document.querySelectorAll('.service-card,.testi-card,.part-card').forEach((el,i)=>{
+  el.style.opacity='0';el.style.transform='translateY(20px)';
+  el.style.transition=`opacity .5s ${i*0.07}s ease,transform .5s ${i*0.07}s ease`;
+  svcObs.observe(el);
+});
 </script>
 </body>
 </html>
