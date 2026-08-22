@@ -1,0 +1,14 @@
+{
+  "name": "CyberRodent Repair Co.",
+  "short_name": "CyberRodent",
+  "description": "Diagnostics, servo realignment and neural firmware for cybernetically enhanced rodentia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080a0e",
+  "theme_color": "#080a0e",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
