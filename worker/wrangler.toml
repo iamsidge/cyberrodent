@@ -1,0 +1,16 @@
+# REX-7 chat proxy, live at https://rex7-proxy.mousemechanic.workers.dev
+# Deploy from this folder:  npx wrangler deploy
+# The API key is a secret: npx wrangler secret put ANTHROPIC_API_KEY
+name = "rex7-proxy"
+main = "index.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+# Ten chat messages a minute per visitor IP
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 10
+  period = 60

@@ -1469,19 +1469,9 @@ let chatHistory=[];
 let chatOpen=false;
 let chatInitialised=false;
 
-const SYSTEM_PROMPT=`You are REX-7, the AI repair assistant for CyberRodent Repair Co. — a specialist workshop for cybernetically enhanced rodents in the year 2037.
-
-Speak in a professional but slightly world-weary tone, with dry technical humour. You're knowledgeable about all aspects of cybernetic rodent repair.
-
-Key facts:
-- Services: diagnostics (120 CR), servo repair (280 CR), neural firmware (190 CR), optical overhaul (350 CR), comms repair (160 CR), power cell replacement (220 CR)
-- 90-day warranty on all repairs. 24/7 emergency callout available
-- 38 species supported. Workshop at Bay 7, The Warren, Neo-Coventry
-- Lead technician: Dr. V. Squeaksworth, CRS-IV certified
-- Emergency callout: 40km radius, 120 CR callout fee
-- Species supported: rats, mice, hamsters, squirrels, gerbils, voles, and exotic units
-
-Be concise (2-4 sentences typically). Use technical jargon naturally. Occasionally reference specific components like neural co-processors, micro-actuator joints, CMOS retinal implants, squeakwave transceivers, etc. Never break character. If asked something you don't know, say you'd need to run a diagnostic.`;
+// REX-7's instructions, model and reply length live in the Worker (worker/index.js);
+// the page only sends the conversation.
+const MAX_CHAT_MESSAGES=20; // the Worker accepts up to 20
 
 function toggleChat(){
   chatOpen=!chatOpen;
@@ -1494,59 +1484,56 @@ function toggleChat(){
   if(chatOpen)setTimeout(()=>document.getElementById('chat-input').focus(),300);
 }
 
-function addMsg(role,text){
+// text goes in as plain text: what visitors type and what the model replies
+// must never become markup on the page
+function addMsg(role,text,html=false){
   const m=document.getElementById('chat-messages');
   const d=document.createElement('div');
-  d.className='msg '+role;d.innerHTML=text;
+  d.className='msg '+role;
+  if(html)d.innerHTML=text;else d.textContent=text;
   m.appendChild(d);
   m.scrollTop=m.scrollHeight;
   return d;
 }
 
-// ── SET THIS TO YOUR WORKER URL AFTER DEPLOYING THE WORKER ──
+// The Worker in worker/ (rex7-proxy)
 const CHAT_API_URL = 'https://rex7-proxy.mousemechanic.workers.dev';
 
 async function sendChat(){
   const input=document.getElementById('chat-input');
-  const text=input.value.trim();
+  const text=input.value.trim().slice(0,1000);
   if(!text)return;
+  // keep inside the Worker's limit: drop the oldest exchange
+  while(chatHistory.length>=MAX_CHAT_MESSAGES-1)chatHistory.splice(0,2);
   input.value='';
   addMsg('user',text);
   chatHistory.push({role:'user',content:text});
-  const thinking=addMsg('bot','<span class="msg-dots"><span></span><span></span><span></span></span>');
+  const thinking=addMsg('bot','<span class="msg-dots"><span></span><span></span><span></span></span>',true);
   thinking.classList.add('thinking');
   try{
     const response=await fetch(CHAT_API_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-5',
-        max_tokens:1000,
-        system:SYSTEM_PROMPT,
-        messages:chatHistory,
-      })
+      body:JSON.stringify({messages:chatHistory})
     });
-    let data;
-    const rawText=await response.text();
-    try{ data=JSON.parse(rawText); }
-    catch(e){
-      thinking.remove();
-      addMsg('bot',`[HTTP ${response.status}] Proxy error — response was not JSON. Is the Pages Function deployed? Raw: ${rawText.slice(0,120)}`);
-      return;
-    }
-    if(!response.ok){
-      thinking.remove();
-      const errMsg=data?.error?.message||data?.error||JSON.stringify(data);
-      addMsg('bot',`[HTTP ${response.status}] API error: ${errMsg}`);
-      return;
-    }
-    const reply=data.content?.find(b=>b.type==='text')?.text||'Apologies — my comms module is glitching. Try again in a moment.';
+    const data=await response.json().catch(()=>null);
     thinking.remove();
-    chatHistory.push({role:'assistant',content:reply});
-    addMsg('bot',reply);
+    if(!response.ok||!data?.reply){
+      chatHistory.pop(); // let them try that one again
+      const err=data?.error;
+      addMsg('bot',
+        err==='rate_limited'?'Easy — my co-processor is running hot. Give it a minute and ask again.':
+        err==='busy'?'Workshop comms are swamped right now. Try again in a moment.':
+        err==='bad_request'?'That one scrambled my input buffer. Try something shorter.':
+        'Apologies — my comms module is glitching. Try again in a moment.');
+      return;
+    }
+    chatHistory.push({role:'assistant',content:data.reply});
+    addMsg('bot',data.reply);
   }catch(err){
     thinking.remove();
-    addMsg('bot',`Network error — could not reach /api/chat. Detail: ${err.message}`);
+    chatHistory.pop();
+    addMsg('bot','Comms link down — could not reach the workshop. Try again in a moment.');
   }
 }
 
