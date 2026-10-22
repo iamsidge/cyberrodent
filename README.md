@@ -52,7 +52,7 @@ log, generated client-side.
 | **Front-end** | Vanilla HTML/CSS/JS — no framework |
 | **Graphics** | Hand-authored SVG |
 
-No build step. No dependencies. One HTML file and a Worker.
+No build step. No dependencies. One HTML file and a Worker (`worker/`).
 
 ## Running locally
 
@@ -63,20 +63,40 @@ cd cyberrodent
 # Static preview — the site runs, REX-7 won't
 python3 -m http.server 8000
 
-# Full local dev including the Worker
-npx wrangler pages dev .
+# The Worker, with a key in worker/.dev.vars (ANTHROPIC_API_KEY=...)
+cd worker && npx wrangler dev
 ```
 
-REX-7 needs an `ANTHROPIC_API_KEY` set as a Worker secret:
+The page talks to the Worker at its live address; point `CHAT_API_URL` in
+`index.html` at `http://localhost:8787` to chat through a local one.
 
-```bash
-npx wrangler secret put ANTHROPIC_API_KEY
-```
+## REX-7's Worker
+
+`worker/` is the `rex7-proxy` Worker. The page sends it only the conversation;
+the model, reply length and REX-7's system prompt are fixed in the Worker, so
+it can't be used as a general Claude API on the workshop's key. It also:
+
+- answers only mousemechanic.co.uk, its www, cyberrodent-repair.pages.dev and
+  localhost (other websites can't use it from a browser);
+- takes at most 20 messages of up to 1,000 characters, 8,000 in all, as plain
+  text, alternating user and assistant and ending with the user;
+- allows each visitor IP 10 messages a minute (`[[ratelimits]]` in
+  `wrangler.toml`);
+- returns just `{ reply }`, and keeps Claude API errors in the Worker's logs.
+
+The Origin check doesn't stop scripts, which can send any Origin they like: the
+caps and the rate limit are what bound the cost.
 
 ## Deploying
 
 ```bash
+# The site
 npx wrangler pages deploy . --project-name=cyberrodent-repair
+
+# The Worker, and its key as a secret
+cd worker
+npx wrangler deploy
+npx wrangler secret put ANTHROPIC_API_KEY
 ```
 
 ## Notes
